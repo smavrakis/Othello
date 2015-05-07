@@ -4,4 +4,12 @@
  * and open the template in the editor.
  */
 
+// This runs when the document is loaded
+$(document).ready(function () {
+	initGame();
+});
 
+// Initializes the game
+function initGame() {
+	
+}

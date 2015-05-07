@@ -8,16 +8,19 @@ and open the template in the editor.
     Author     : Stavros
 */
 
-/*body {
-    background-image: url("img/board.jpg");
-}*/
 
-#board {
-   width: 536px;
-   height: 528px;
-   background-image: url("../img/board.jpg");
+table#board {   
+   width: 722px;
+   height: 722px;
+   background-image: url("../img/board.gif");
    position: fixed;
    top: 50%;
    left: 50%;  
    transform: translate(-50%, -50%);
+   border: 1px solid black;
+   border-collapse: collapse;
+}
+
+.tr,td{
+	border: 1px solid black;
 }
