@@ -42,14 +42,13 @@ function draw(){
 	}
 	drawState();
 	var canvas2 = document.getElementById('state');
-	canvas2.addEventListener('click',placetile,false);
+	canvas2.addEventListener('click',checkValidity,false);
     }
 }
 
 
 //Calculates in which square the user clicked and places a tile in the correct index in boardstate.
-function placetile() {
-    var canvas = document.getElementById('state');
+function placetile(x,y) {
     var color = "";
     if(flag == 0) {
 	color = "black";
@@ -58,6 +57,29 @@ function placetile() {
 	color = "white";
 	flag = 0;
     }
+    console.log(x+","+y)
+    boardState[x*8+y] = color;
+    
+    drawState();
+}
+
+function checkAround(x,y) {
+    if(boardState[(x-1)*8+(y-1)] == "green" &&
+       boardState[(x-1)*8+y] == "green" &&
+       boardState[(x-1)*8+(y+1)] == "green" &&
+       boardState[x*8+(y-1)] == "green" &&
+       boardState[x*8+(y+1)] == "green" &&
+       boardState[(x+1)*8+y] == "green" &&
+       boardState[(x+1)*8+(y-1)] == "green" &&
+       boardState[(x+1)*8+(y+1)] == "green") {
+	return false;
+    } else {
+	return true;
+    }
+}
+
+function checkValidity(){
+    var canvas = document.getElementById('state');
     var x = event.offsetX;
     var y = event.offsetY;
     for(var i = 0; i < 8;i++) {
@@ -71,12 +93,15 @@ function placetile() {
 	    y = i;
 	    break;
 	}
+    }   
+    if(boardState[x*8+y] != "green") {
+	alert("There's already a tile on that position");
+	return;
+    } else if(checkAround(x,y) == false) {
+	alert("You need to place the tile adjacent to another tile");
+	return;
     }
-    console.log(x+","+y)
-    boardState[x*8+y] = color;
-    
-    drawState();
-    
+    placetile(x,y);
 }
 
 function calcRadius(){
