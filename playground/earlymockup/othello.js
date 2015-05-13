@@ -2,7 +2,7 @@
 var boardState = new Array(64);
 
 //temporary flag for decided whos turn it is
-var flag = 0;
+var flag = "white";
 
 //Initializing draw function, draws the board and saves the first four pieces in the boardstate and draws the original state
 function draw(){
@@ -50,28 +50,179 @@ function draw(){
 //Calculates in which square the user clicked and places a tile in the correct index in boardstate.
 function placetile(x,y) {
     var color = "";
-    if(flag == 0) {
+    if(flag == "black") {
 	color = "black";
-	flag = 1;
+	//flag = "white";
     } else {
 	color = "white";
-	flag = 0;
+	//flag = "black";
     }
-    console.log(x+","+y)
     boardState[x*8+y] = color;
     
     drawState();
 }
 
+function getAdjacentTiles(x,y){
+    if (x == 0 && y == 0) {
+	var list = new Array(3);
+	list[0] = {color:boardState[1],x:0,y:1};
+	list[1] = {color:boardState[9],x:1,y:1};
+	list[2] = {color:boardState[8],x:1,y:0};
+	return list;
+    } else if (x == 0 && y == 7) {
+	var list = new Array(3);
+	list[0] = {color:boardState[6],x:0,y:6};
+	list[1] = {color:boardState[15],x:1,y:7};
+	list[2] = {color:boardState[14],x:1,y:6};
+	return list;
+    } else if (x == 7 && y == 7) {
+	 var list = new Array[3];
+	 list[0] = {color:boardState[63],x:7,y:6};
+	 list[1] = {color:boardState[6*8+7],x:6,y:7};
+	 list[2] = {color:boardState[6*8+6],x:6,y:6};
+	 return list;
+     } else if (x == 7 && y == 0) {
+	 var list = new Array(3);
+	 list[0] = {color:boardState[6*8],x:6,y:0};
+	 list[1] = {color:boardState[7*8+1],x:7,y:1};
+	 list[2] = {color:boardState[6*8+1],x:6,y:1};
+	 return list;
+     } else {
+	 var list = new Array(8);
+	 list[0] = {color:boardState[x*8+(y-1)],x:x,y:y-1};
+	 list[1] = {color:boardState[x*8+(y+1)],x:x,y:y+1};
+	 list[2] = {color:boardState[(x-1)*8+(y-1)],x:x-1,y:y-1};
+	 list[3] = {color:boardState[(x+1)*8+(y+1)],x:x+1,y:y+1};
+	 list[4] = {color:boardState[(x-1)*8+(y)],x:x-1,y:y};
+	 list[5] = {color:boardState[(x+1)*8+(y-1)],x:x+1,y:y-1};
+	 list[6] = {color:boardState[(x-1)*8+(y+1)],x:x-1,y:y+1};
+	 list[7] = {color:boardState[(x+1)*8+y],x:7,y:1};
+	 return list;
+     }
+}
+
+function checkFlippings(x,y) {
+    var list = getAdjacentTiles(x,y);
+    
+    var flipList = [];
+    console.log("---------------------------------------------------");
+    for(var i = 0;i < list.length;i++){
+	if(list[i].color == flag) {	    
+	    continue;
+	}
+	if(flipList.length == 0 && (list[i].x >= 8 || list[i].y >= 8 || list[i].x <= 0 ||list[i].y <= 0)) {
+	    continue;
+	} else {
+	    var k = (list[i].y -y)/(list.x-x);
+	    var m = y-k*x;
+	    var newY = k*list[i].x+m;
+	    var newX = list[i].x;
+	    console.log(list[i].x + "," + list[i].y)
+
+	    while(boardState[newX*8+newY] != flag && newY < 0 || newY > 8) {
+		console.log("hej");
+		flipList.push({x:newX,y:newY});
+		if(list[i].x > x) {
+		    newX = x++;
+		} else {
+		    newX = x--;
+		}
+		newY = k*list[i].x+m;
+		
+	    }
+	    if(newY < 0 || newY >8) {
+		flipList = [];
+	    }
+	}
+	for(var j = 0;j < flipList.length;j++) {
+	    boardState[flipList[i].x*8+flipList[i].y];
+	}
+	drawState();
+    }
+}
+
+
 function checkAround(x,y) {
-    if(boardState[(x-1)*8+(y-1)] == "green" &&
-       boardState[(x-1)*8+y] == "green" &&
-       boardState[(x-1)*8+(y+1)] == "green" &&
-       boardState[x*8+(y-1)] == "green" &&
-       boardState[x*8+(y+1)] == "green" &&
-       boardState[(x+1)*8+y] == "green" &&
-       boardState[(x+1)*8+(y-1)] == "green" &&
-       boardState[(x+1)*8+(y+1)] == "green") {
+    if (x == 0 && y == 0){
+	if(boardState[x*8+(y+1)] == "green" &&
+	   boardState[(x+1)*8+y] == "green" &&
+	   boardState[(x+1)*8+(y+1)] == "green") {
+	    return false;
+	} else {
+	    return true;
+	}
+    } else if (x == 7 && y == 0) {
+	if(boardState[x*8+(y+1)] == "green" &&
+	   boardState[(x-1)*8+y] == "green" &&
+	   boardState[(x-1)*8+(y+1)] == "green") {
+	    return false;
+	} else {
+	    return true;
+	}
+    } else if (x == 7 && y == 7) {
+	if(boardState[x*8+(y-1)] == "green" &&
+	   boardState[(x-1)*8+y] == "green" &&
+	   boardState[(x-1)*8+(y-1)] == "green") {
+	    return false;
+	} else {
+	    return true;
+	}
+    } else if (x == 0 && y == 7) {
+	if(boardState[x*8+(y-1)] == "green" &&
+	   boardState[(x+1)*8+y] == "green" &&
+	   boardState[(x+1)*8+(y-1)] == "green") {
+	    return false;
+	} else {
+	    return true;
+	}
+    } else if (y == 0) {
+	if(boardState[(x-1)*8+y] == "green" &&
+	   boardState[(x+1)*8+y] == "green" &&
+	   boardState[(x+1)*8+(y+1)] == "green" &&
+	   boardState[(x-1)*8+(y+1)] == "green" &&
+	   boardState[x*8+(y+1)] == "green") {
+	    return false;
+	} else {
+	    return true;
+	}
+    } else if (y == 7) {
+	if(boardState[(x-1)*8+y] == "green" &&
+	   boardState[(x+1)*8+y] == "green" &&
+	   boardState[(x+1)*8+(y-1)] == "green" &&
+	   boardState[(x-1)*8+(y-1)] == "green" &&
+	   boardState[x*8+(y-1)] == "green") {
+	    return false;
+	} else {
+	    return true;
+	}
+    } else if (x == 0) {
+	if(boardState[x*8+(y-1)] == "green" &&
+	   boardState[x*8+(y+1)] == "green" &&
+	   boardState[(x+1)*8+(y+1)] == "green" &&
+	   boardState[(x+1)*8+(y-1)] == "green" &&
+	   boardState[(x+1)*8+y] == "green") {
+	    return false;
+	} else {
+	    return true;
+	}
+    } else if (x == 7) {
+	if(boardState[x*8+(y-1)] == "green" &&
+	   boardState[x*8+(y+1)] == "green" &&
+	   boardState[(x-1)*8+(y+1)] == "green" &&
+	   boardState[(x-1)*8+(y-1)] == "green" &&
+	   boardState[(x-1)*8+y] == "green") {
+	    return false;
+	} else {
+	    return true;
+	}
+    } else if(boardState[(x-1)*8+(y-1)] == "green" &&
+	      boardState[(x-1)*8+y] == "green" &&
+	      boardState[(x-1)*8+(y+1)] == "green" &&
+	      boardState[x*8+(y-1)] == "green" &&
+	      boardState[x*8+(y+1)] == "green" &&
+	      boardState[(x+1)*8+y] == "green" &&
+	      boardState[(x+1)*8+(y-1)] == "green" &&
+	      boardState[(x+1)*8+(y+1)] == "green") {
 	return false;
     } else {
 	return true;
@@ -93,15 +244,25 @@ function checkValidity(){
 	    y = i;
 	    break;
 	}
-    }   
-    if(boardState[x*8+y] != "green") {
+    }
+    if (x < 0 || y < 0 || x > 7 || y > 7) {
+	alert("tile placement out of bounds");
+	return;
+    } else if(boardState[x*8+y] != "green") {
 	alert("There's already a tile on that position");
 	return;
     } else if(checkAround(x,y) == false) {
 	alert("You need to place the tile adjacent to another tile");
 	return;
     }
+    checkFlippings(x,y);
     placetile(x,y);
+    if(flag == "black") {	
+	flag = "white";
+    } else {
+	flag = "black";
+    }
+    drawState();
 }
 
 function calcRadius(){
@@ -118,7 +279,6 @@ function drawState() {
     ctx.clearRect(0,0,canvas.width,canvas.height)
     for(var i = 0;i < 8;i++) {
 	for(var j = 0;j < 8;j++){
-	    console.log(boardState[i*8+j]+"("+i+","+j+")");
 	    if(boardState[i*8+j] !== "green") {
 		ctx.beginPath();
 		x = (canvas.width/8)*i +((canvas.width/8)/2);
