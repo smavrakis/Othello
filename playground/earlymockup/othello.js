@@ -96,14 +96,13 @@ function getAdjacentTiles(x,y){
 	 list[4] = {color:boardState[(x-1)*8+(y)],x:x-1,y:y};
 	 list[5] = {color:boardState[(x+1)*8+(y-1)],x:x+1,y:y-1};
 	 list[6] = {color:boardState[(x-1)*8+(y+1)],x:x-1,y:y+1};
-	 list[7] = {color:boardState[(x+1)*8+y],x:7,y:1};
+	 list[7] = {color:boardState[(x+1)*8+y],x:x+1,y:y};
 	 return list;
      }
 }
 
 function checkFlippings(x,y) {
-    var list = getAdjacentTiles(x,y);
-    
+    var list = getAdjacentTiles(x,y); 
     var flipList = [];
     console.log("---------------------------------------------------");
     for(var i = 0;i < list.length;i++){
@@ -113,12 +112,20 @@ function checkFlippings(x,y) {
 	if(flipList.length == 0 && (list[i].x >= 8 || list[i].y >= 8 || list[i].x <= 0 ||list[i].y <= 0)) {
 	    continue;
 	} else {
-	    var k = (list[i].y -y)/(list.x-x);
-	    var m = y-k*x;
-	    var newY = k*list[i].x+m;
-	    var newX = list[i].x;
-	    console.log(list[i].x + "," + list[i].y)
-
+	    //Add support for vertical adjacent tiles here
+	    if(list.x - x == 0) {
+		var k = (list[i].y - y)/(list[i].x - x);
+		var m = y-k*x;
+		var newY = k*(list[i].x+m);
+		var newX = list[i].x;
+		
+	    } else {
+		var k = (list[i].y - y)/(list[i].x - x);
+		var m = y-k*x;
+		var newY = k*(list[i].x+m);
+		var newX = list[i].x;
+	    }
+	    console.log(k);
 	    while(boardState[newX*8+newY] != flag && newY < 0 || newY > 8) {
 		console.log("hej");
 		flipList.push({x:newX,y:newY});
@@ -130,13 +137,15 @@ function checkFlippings(x,y) {
 		newY = k*list[i].x+m;
 		
 	    }
-	    if(newY < 0 || newY >8) {
+	    
+	}
+
+	for(var j = 0;j < flipList.length;j++) {
+	    boardState[flipList[j].x*8+flipList[j].y];
+	}
+	if(newY < 0 || newY >8) {
 		flipList = [];
 	    }
-	}
-	for(var j = 0;j < flipList.length;j++) {
-	    boardState[flipList[i].x*8+flipList[i].y];
-	}
 	drawState();
     }
 }
