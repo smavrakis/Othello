@@ -59,7 +59,7 @@ function placetile(x,y) {
     }
     boardState[x*8+y] = color;
     
-    drawState();
+    //drawState();
 }
 
 function getAdjacentTiles(x,y){
@@ -89,65 +89,84 @@ function getAdjacentTiles(x,y){
 	 return list;
      } else {
 	 var list = new Array(8);
-	 list[0] = {color:boardState[x*8+(y-1)],x:x,y:y-1};
-	 list[1] = {color:boardState[x*8+(y+1)],x:x,y:y+1};
-	 list[2] = {color:boardState[(x-1)*8+(y-1)],x:x-1,y:y-1};
-	 list[3] = {color:boardState[(x+1)*8+(y+1)],x:x+1,y:y+1};
-	 list[4] = {color:boardState[(x-1)*8+(y)],x:x-1,y:y};
-	 list[5] = {color:boardState[(x+1)*8+(y-1)],x:x+1,y:y-1};
-	 list[6] = {color:boardState[(x-1)*8+(y+1)],x:x-1,y:y+1};
-	 list[7] = {color:boardState[(x+1)*8+y],x:x+1,y:y};
+	 list[0] = {color:boardState[x*8+(y-1)],x:x,y:(y-1)};
+	 list[1] = {color:boardState[x*8+(y+1)],x:x,y:(y+1)};
+	 list[2] = {color:boardState[(x-1)*8+(y-1)],x:(x-1),y:(y-1)};
+	 list[3] = {color:boardState[(x+1)*8+(y+1)],x:(x+1),y:(y+1)};
+	 list[4] = {color:boardState[(x-1)*8+(y)],x:(x-1),y:y};
+	 list[5] = {color:boardState[(x+1)*8+(y-1)],x:(x+1),y:(y-1)};
+	 list[6] = {color:boardState[(x-1)*8+(y+1)],x:(x-1),y:(y+1)};
+	 list[7] = {color:boardState[(x+1)*8+y],x:(x+1),y:y};
 	 return list;
      }
 }
 
 function checkFlippings(x,y) {
     var list = getAdjacentTiles(x,y); 
-    var flipList = [];
-    console.log("---------------------------------------------------");
-    for(var i = 0;i < list.length;i++){
-	if(list[i].color == flag) {	    
-	    continue;
-	}
-	if(flipList.length == 0 && (list[i].x >= 8 || list[i].y >= 8 || list[i].x <= 0 ||list[i].y <= 0)) {
-	    continue;
-	} else {
-	    //Add support for vertical adjacent tiles here
-	    if(list.x - x == 0) {
-		var k = (list[i].y - y)/(list[i].x - x);
-		var m = y-k*x;
-		var newY = k*(list[i].x+m);
-		var newX = list[i].x;
+    
+    var k,m,newX,newY;
+    var i;
+    var flipped = 0;
+    var counter;
+    for(i=0;i < list.length; i++) {
+	var flipList = [];
+	counter = 0;	
+	if(boardState[list[i].x*8+list[i].y] == flag || boardState[list[i].x*8+list[i].y] == "green") {
+	    continue;	
+	} 
+
+	if((list[i].x - x) == 0) {
+	    console.log("halli------------------------------------------------------------");
+	    newY = list[i].y;
+	    newX = list[i].x;
+	    while(boardState[newX*8+newY] != flag && boardState[newX*8+newY] != "green" && newX >= 0 && newX <= 7 && newY >= 0 && newY <= 7) {
+		console.log(boardState[newX*8+newY]+", "+newX+","+newY);
 		
-	    } else {
-		var k = (list[i].y - y)/(list[i].x - x);
-		var m = y-k*x;
-		var newY = k*(list[i].x+m);
-		var newX = list[i].x;
-	    }
-	    console.log(k);
-	    while(boardState[newX*8+newY] != flag && newY < 0 || newY > 8) {
-		console.log("hej");
 		flipList.push({x:newX,y:newY});
-		if(list[i].x > x) {
-		    newX = x++;
+		if(list[i].y > y) {
+		    newY++;
 		} else {
-		    newX = x--;
+		    newY--;
 		}
-		newY = k*list[i].x+m;
-		
+		counter++;
 	    }
-	    
+	} else {
+	    console.log("hallo------------------------------------------------------------");
+	    k = (list[i].y - y)/(list[i].x - x);
+	    m = list[i].y-(list[i].x*k);
+
+	    newY = list[i].y;
+	    newX = list[i].x;
+	    while(boardState[newX*8+newY] != flag && boardState[newX*8+newY] != "green" && (newX >= 0 && newX <= 7 && newY >= 0 && newY <= 7))  {
+		console.log(boardState[newX*8+newY]+", "+newX+","+newY);
+		
+		flipList.push({x:newX,y:newY})
+		if(list[i].x > x) {
+		    newX++;
+		} else {
+		    newX--;
+		}
+		newY = newX*k + m; 
+		counter++;
+	    }
 	}
 
-	for(var j = 0;j < flipList.length;j++) {
-	    boardState[flipList[j].x*8+flipList[j].y];
-	}
-	if(newY < 0 || newY >8) {
-		flipList = [];
+	if(boardState[newX*8+newY] === "green") {
+	    flipstList = [];   
+	} else {
+	    for(var j = 0;j < flipList.length;j++) {
+		boardState[flipList[j].x*8+flipList[j].y] = flag;
+		
 	    }
-	drawState();
+	    flipstList = [];
+	    flipped++;
+	}
+	
     }
+    if(flipped == 0) {
+	return false;
+    }
+    return true;
 }
 
 
@@ -240,20 +259,23 @@ function checkAround(x,y) {
 
 function checkValidity(){
     var canvas = document.getElementById('state');
-    var x = event.offsetX;
-    var y = event.offsetY;
+    var xoff = event.offsetX;
+    var yoff = event.offsetY;
+    var x;
+    var y;
     for(var i = 0; i < 8;i++) {
-	if(x> (canvas.width/8)*i && x<(canvas.width/8)*(i+1)) {
-	    x = i;
-	    break;
-	}
-    }
-    for(var i = 0; i < 8;i++) {
-	if(y>(canvas.width/8)*i && y<(canvas.width/8)*(i+1)) {
+	if(xoff> (canvas.width/8)*i && xoff<(canvas.width/8)*(i+1)) {
 	    y = i;
 	    break;
 	}
     }
+    for(var i = 0; i < 8;i++) {
+	if(yoff>(canvas.width/8)*i && yoff<(canvas.width/8)*(i+1)) {
+	    x= i;
+	    break;
+	}
+    }
+    
     if (x < 0 || y < 0 || x > 7 || y > 7) {
 	alert("tile placement out of bounds");
 	return;
@@ -263,9 +285,12 @@ function checkValidity(){
     } else if(checkAround(x,y) == false) {
 	alert("You need to place the tile adjacent to another tile");
 	return;
+    } else if (checkFlippings(x,y) == false) {
+	alert("You must place the tile in a place so you can flip tiles(note to code: this is a bad error message");
+	return;
     }
-    checkFlippings(x,y);
     placetile(x,y);
+    
     if(flag == "black") {	
 	flag = "white";
     } else {
@@ -290,8 +315,8 @@ function drawState() {
 	for(var j = 0;j < 8;j++){
 	    if(boardState[i*8+j] !== "green") {
 		ctx.beginPath();
-		x = (canvas.width/8)*i +((canvas.width/8)/2);
-		y = (canvas.height/8)*j+((canvas.height/8)/2);
+		y = (canvas.width/8)* i +((canvas.width/8)/2);
+		x = (canvas.height/8)*j+((canvas.height/8)/2);
 		if(boardState[i*8+j] == "black") {
 		    ctx.fillStyle = "black";
 		} else if (boardState[i*8+j] == "white"){
