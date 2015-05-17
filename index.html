@@ -8,10 +8,15 @@
 		<link rel="stylesheet" type="text/css" href="css/index.css" />
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>		
 	</head>	
-	<body onload="draw();">
-		<canvas id="board" width="700" height="700"></canvas>
-		<canvas id="state" width="700" height="700"></canvas>
-
+	<body onload="draw();">	
+	
+		<canvas id="board" width="700" height="700">Your browser does not support HTML5 Canvas.</canvas>
+		<canvas id="state" width="700" height="700">Your browser does not support HTML5 Canvas.</canvas>
+	
+		<audio id="myMusic" src="music/SolemnVow.mp3" controls autoplay loop>
+			<p>If you are reading this, it is because your browser does not support the audio element.</p>
+		</audio>		
+		
 		<!--
 		The script is placed as late as possible in the loading process.
 		-->

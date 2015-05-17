@@ -339,4 +339,3 @@ function drawWhite(x,y){
 		ctx.closePath();
     }
 }
-
