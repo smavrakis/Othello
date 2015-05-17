@@ -1,26 +1,15 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : May 7, 2015, 12:19:56 PM
-    Author     : Stavros
-*/
-
-
-table#board {   
-   width: 722px;
-   height: 722px;
-   background-image: url("../img/board.gif");
-   position: fixed;
-   top: 50%;
-   left: 50%;  
-   transform: translate(-50%, -50%);
-   border: 1px solid black;
-   border-collapse: collapse;
+canvas{
+	border: 1px solid black; 
+	position: fixed;
+	top: 50%;
+	left: 50%;  
+	transform: translate(-50%, -50%);
 }
 
-.tr,td{
-	border: 1px solid black;
+#board{	 
+	z-index: 1;
+}
+
+#state{	
+	z-index: 2;
 }

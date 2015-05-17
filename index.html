@@ -1,29 +1,20 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
-    <head>
-        <title>Reversi</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		
+	<head>
+		<title>Reversi</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
 		<link rel="stylesheet" type="text/css" href="css/index.css" />
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-		<script src="js/reversi.js"></script>
-    </head>
-    <body>
-        <table id="board">
-			<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-			<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-			<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-			<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-			<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-			<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-			<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-			<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>			
-		</table>
-    </body>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>		
+	</head>	
+	<body onload="draw();">
+		<canvas id="board" width="700" height="700"></canvas>
+		<canvas id="state" width="700" height="700"></canvas>
+
+		<!--
+		The script is placed as late as possible in the loading process.
+		-->
+		<script src="js/othello.js"></script>
+	</body>
 </html>
