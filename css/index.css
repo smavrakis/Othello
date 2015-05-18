@@ -29,26 +29,34 @@ canvas{
     background: #DDDDDD;
     border-radius: 20px; 
     -moz-border-radius: 20px; 
-    -webkit-border-radius: 20px;
-    margin: 10px;
+    -webkit-border-radius: 20px;    
     text-align: center;	
+}
+
+.score-container{
+	position: fixed;
+	width: 600px;
+	height: 170px;	
+	left: 50%;  
+	transform: translateX(-50%);
 }
 
 #score-black {
     color: black;
-	position: fixed;
-	top: 5%;
-	left: 40%;
+	position: absolute;
+	top: 15%;
+	left: 25%;
 }
 
 #score-white {
     color: white;
-	position: fixed;
-	top: 5%;
+	position: absolute;
+	top: 15%;
 	left: 50%;
 }
 
 #turn{
+	padding: 5px;
 	width: 200px;    
 	font-size: 30px;
     background: #DDDDDD;
@@ -56,8 +64,9 @@ canvas{
     -moz-border-radius: 20px; 
     -webkit-border-radius: 20px;    
     text-align: center;
-	position: fixed;
-	top: 13%;
-	left: 44%;
+	position: absolute;
+	top: 70%;
+	left: 50%;  
+	transform: translateX(-50%);
 }
 
