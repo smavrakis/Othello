@@ -2,7 +2,7 @@
 var boardState = new Array(64);
 
 //Temporary flag to decide whose turn it is
-var flag = "white";
+var flag = "black";
 
 //Initializes the draw function, draws the board, saves the first four pieces in the boardState and draws the original state
 function draw(){
@@ -43,9 +43,38 @@ function draw(){
 		}
 		
 		drawState();
+		updateScore();
 		var canvas2 = document.getElementById('state');
 		canvas2.addEventListener('click',checkValidity,false);
     }
+}
+
+function updateScore(){
+	var score_white = 0;
+	var score_black = 0;
+	
+	for(var i=0;i<64;i++){
+		if (boardState[i] == "white"){
+			score_white++;
+		}else if ((boardState[i] == "black")){
+			score_black++;
+		}		
+	}
+	
+	var white = document.getElementById('score-white');
+	var black = document.getElementById('score-black');
+	var turn = document.getElementById('turn');
+	
+	white.innerHTML = score_white;
+	black.innerHTML = score_black;
+	
+	if (flag == "black"){
+		turn.style.color = "black";
+		turn.innerHTML = "Black's turn";
+	}else if (flag == "white"){
+		turn.style.color = "white";
+		turn.innerHTML = "White's turn";
+	}	
 }
 
 
@@ -312,6 +341,8 @@ function drawState(){
 			}	   
 		}	
     }
+	
+	updateScore();
 }
 
 function drawBlack(x,y){

@@ -4,6 +4,7 @@ canvas{
 	top: 50%;
 	left: 50%;  
 	transform: translate(-50%, -50%);
+	cursor: pointer;
 }
 
 #board{	 
@@ -16,7 +17,47 @@ canvas{
 
 #myMusic{
 	position: fixed;
-	top: 95%;
+	top: 90%;
 	left: 42%;  	
+}
+
+.score-node {
+    display: inline-block;
+    width: 125px;
+    padding: 10px;
+    font-size: 30px;
+    background: #DDDDDD;
+    border-radius: 20px; 
+    -moz-border-radius: 20px; 
+    -webkit-border-radius: 20px;
+    margin: 10px;
+    text-align: center;	
+}
+
+#score-black {
+    color: black;
+	position: fixed;
+	top: 5%;
+	left: 40%;
+}
+
+#score-white {
+    color: white;
+	position: fixed;
+	top: 5%;
+	left: 50%;
+}
+
+#turn{
+	width: 200px;    
+	font-size: 30px;
+    background: #DDDDDD;
+    border-radius: 20px; 
+    -moz-border-radius: 20px; 
+    -webkit-border-radius: 20px;    
+    text-align: center;
+	position: fixed;
+	top: 13%;
+	left: 44%;
 }
 
