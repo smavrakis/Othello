@@ -53,7 +53,7 @@ function updateScore(){
 	var score_white = 0;
 	var score_black = 0;
 	
-	for(var i=0;i<64;i++){
+	for (var i=0;i<64;i++){
 		if (boardState[i] == "white"){
 			score_white++;
 		}else if ((boardState[i] == "black")){
@@ -74,7 +74,18 @@ function updateScore(){
 	}else if (flag == "white"){
 		turn.style.color = "white";
 		turn.innerHTML = "White's turn";
-	}	
+	}
+
+	if (score_white + score_black >= 64){
+		if (score_white > score_black){
+			alert("White wins!");
+		}else if(score_white < score_black){
+			alert("Black wins!");
+		}else{
+			alert("It's a draw!");
+		}
+		window.location.replace("index.html");
+	}
 }
 
 
