@@ -4,51 +4,105 @@ var boardState = new Array(64);
 //Temporary flag to decide whose turn it is
 var flag = "black";
 
-//Initializes the draw function, draws the board, saves the first four pieces in the boardState and draws the original state
+//Initializes the boardState, calls resizeGame() and sets up the two EventListeners - one for user interaction and one for window resize
 function draw(){
+		
+	for(var i=0;i<64;i++) {
+		boardState[i]="green";
+	}
+	
+	for(var n =0;n<4;n++) {
+		boardState[3*8+3] = "white";
+		boardState[4*8+4] = "white";
+		boardState[4*8+3] = "black";
+		boardState[3*8+4] = "black";
+	}
+	
+	resizeGame();	
+	
+	var canvas2 = document.getElementById('state');
+	canvas2.addEventListener('click',checkValidity,false);
+	window.addEventListener('resize', resizeGame, false);    
+}
+
+//Draws the board
+function drawBoard(){
+	var canvas = document.getElementById('board');	
+	var ctx = canvas.getContext('2d');	
+	ctx.fillStyle = "rgb(0,102,0)";
+	ctx.fillRect(0,0,canvas.width,canvas.height);	
+	var xSep = canvas.width/8;
+	var ySep = canvas.height/8;
+	ctx.lineWidth = 1;
+	
+	for (var i = 1;i <= 7;i++) {
+		ctx.beginPath();
+		ctx.moveTo(0,i*ySep);
+		ctx.lineTo(canvas.width,i*xSep);
+		ctx.closePath();
+		ctx.stroke();
+	}
+	
+	for (var i = 1;i <= 7;i++) {
+		ctx.beginPath();
+		ctx.moveTo(i*xSep,0);
+		ctx.lineTo(i*xSep,canvas.height);
+		ctx.closePath();
+		ctx.stroke();
+	}	
+}
+
+//Resizes the board depending on current window size
+function resizeGame(){
+    var gameArea = document.getElementById('board-container');
+    var widthToHeight = 1;
+    var newWidth = window.innerWidth / 1.7;
+    var newHeight = window.innerHeight / 1.7;
+    var newWidthToHeight = newWidth / newHeight;
+    
+    if (newWidthToHeight > widthToHeight){
+        newWidth = newHeight * widthToHeight;
+        gameArea.style.height = newHeight + 'px';
+        gameArea.style.width = newWidth + 'px';
+    }else{
+        newHeight = newWidth / widthToHeight;
+        gameArea.style.width = newWidth + 'px';
+        gameArea.style.height = newHeight + 'px';
+    }
+    
     var canvas = document.getElementById('board');
-    if (canvas.getContext){
-        var ctx = canvas.getContext('2d');
-		ctx.fillStyle = "rgb(0,102,0)";
-		ctx.fillRect(0,0,canvas.width,canvas.height);	
-		var xSep = canvas.width/8;
-		var ySep = canvas.height/8;
-		ctx.lineWidth = 1;
+	var canvas2 = document.getElementById('state');
 	
-		for (var i = 1;i <= 7;i++) {
-			ctx.beginPath();
-			ctx.moveTo(0,i*ySep);
-			ctx.lineTo(canvas.width,i*xSep);
-			ctx.closePath();
-			ctx.stroke();
-		}
+	canvas.width = newWidth;
+	canvas.height = newHeight;
+	canvas2.width = newWidth;
+	canvas2.height = newHeight;
 	
-		for (var i = 1;i <= 7;i++) {
-			ctx.beginPath();
-			ctx.moveTo(i*xSep,0);
-			ctx.lineTo(i*xSep,canvas.height);
-			ctx.closePath();
-			ctx.stroke();
-		}
-		
-		for(var i=0;i<64;i++) {
-			boardState[i]="green";
-		}
-	
-		for(var n =0;n<4;n++) {
-			boardState[3*8+3] = "white";
-			boardState[4*8+4] = "white";
-			boardState[4*8+3] = "black";
-			boardState[3*8+4] = "black";
-		}
-		
-		drawState();
-		updateScore();
-		var canvas2 = document.getElementById('state');
-		canvas2.addEventListener('click',checkValidity,false);
+	resizeStats();
+	drawBoard();
+	drawState();
+}
+
+//Resizes the score container
+function resizeStats(){
+	var container = document.getElementById('score-container');
+    var widthToHeight = 1.5;
+    var newWidth = window.innerWidth;
+    var newHeight = window.innerHeight;
+    var newWidthToHeight = newWidth / newHeight;
+    
+    if (newWidthToHeight > widthToHeight){
+        newWidth = newHeight * widthToHeight;
+        container.style.height = (newHeight * 0.2) + 'px';
+        container.style.width = (newWidth * 0.4) + 'px';
+    }else{
+        newHeight = newWidth / widthToHeight;
+        container.style.width = (newWidth * 0.4) + 'px';
+        container.style.height = (newHeight * 0.2) + 'px';
     }
 }
 
+//Updates the score and checks for a win condition
 function updateScore(){
 	var score_white = 0;
 	var score_black = 0;
@@ -62,18 +116,17 @@ function updateScore(){
 	}
 	
 	var white = document.getElementById('score-white');
-	var black = document.getElementById('score-black');
-	var turn = document.getElementById('turn');
+	var black = document.getElementById('score-black');	
 	
 	white.innerHTML = score_white;
 	black.innerHTML = score_black;
 	
 	if (flag == "black"){
-		turn.style.color = "black";
-		turn.innerHTML = "Black's turn";
+		white.style.textDecoration = "none";
+		black.style.textDecoration = "underline";		
 	}else if (flag == "white"){
-		turn.style.color = "white";
-		turn.innerHTML = "White's turn";
+		white.style.textDecoration = "underline";
+		black.style.textDecoration = "none";		
 	}
 
 	if (score_white + score_black >= 64){

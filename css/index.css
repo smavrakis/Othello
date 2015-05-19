@@ -1,10 +1,14 @@
 canvas{
 	border: 1px solid black; 
-	position: fixed;
+	position: absolute;	
+	cursor: pointer;	
+}
+
+#board-container{	
+	position: fixed;	
 	top: 50%;
 	left: 50%;  
 	transform: translate(-50%, -50%);
-	cursor: pointer;
 }
 
 #board{	 
@@ -17,14 +21,16 @@ canvas{
 
 #myMusic{
 	position: fixed;
-	top: 90%;
-	left: 42%;  	
+	width: 20%;
+	top: 85%;
+	left: 50%;  
+	transform: translateX(-50%);  	
 }
 
 .score-node {
     display: inline-block;
-    width: 125px;
-    padding: 10px;
+    width: 20%;
+    padding: 1.5%;
     font-size: 30px;
     background: #DDDDDD;
     border-radius: 20px; 
@@ -33,11 +39,11 @@ canvas{
     text-align: center;	
 }
 
-.score-container{
+#score-container{
 	/*border: 1px solid black;*/
 	position: fixed;
-	width: 600px;
-	height: 170px;	
+	width: 30%;
+	height: 20%;	
 	left: 50%;  
 	transform: translateX(-50%);
 }
@@ -56,25 +62,11 @@ canvas{
 	left: 50%;
 }
 
-#turn{
-	padding: 5px;
-	width: 200px;    
-	font-size: 30px;
-    background: #DDDDDD;
-    border-radius: 20px; 
-    -moz-border-radius: 20px; 
-    -webkit-border-radius: 20px;    
-    text-align: center;
-	position: absolute;
-	top: 70%;
-	left: 50%;  
-	transform: translateX(-50%);
-}
-
 #reset_button {
 	position: absolute;
-	top: 78%;
-	left: 82%;
+	top: 60%;
+	left: 50%;  
+	transform: translateX(-50%);
 	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
 	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
 	box-shadow:inset 0px 1px 0px 0px #ffffff;
