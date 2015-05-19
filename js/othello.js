@@ -199,7 +199,7 @@ function checkFlippings(x,y){
 			}
 		}
 
-		if (boardState[newX*8+newY] === "green"){
+		if (boardState[newX*8+newY] === "green" || newX < 0 || newX >7 || newY < 0 || newY >7){
 			flipstList = [];   
 		}else{
 			for (var j = 0;j < flipList.length;j++){
