@@ -80,6 +80,7 @@ function updateScore(){
 
 //Calculates which square the user clicked on and places a tile in the correct index in boardState
 function placetile(x,y){
+    console.log(x+","+y);
     var color = "";
 	
     if (flag == "black"){
@@ -97,41 +98,41 @@ function placetile(x,y){
 
 function getAdjacentTiles(x,y){
     
-	if (x == 0 && y == 0){
-		var list = new Array(3);
-		list[0] = {color:boardState[1],x:0,y:1};
-		list[1] = {color:boardState[9],x:1,y:1};
-		list[2] = {color:boardState[8],x:1,y:0};
-		return list;
+    if (x == 0 && y == 0){
+	var list = new Array(3);
+	list[0] = {color:boardState[1],x:0,y:1};
+	list[1] = {color:boardState[9],x:1,y:1};
+	list[2] = {color:boardState[8],x:1,y:0};
+	return list;
     }else if (x == 0 && y == 7){
-		var list = new Array(3);
-		list[0] = {color:boardState[6],x:0,y:6};
-		list[1] = {color:boardState[15],x:1,y:7};
-		list[2] = {color:boardState[14],x:1,y:6};
-		return list;
+	var list = new Array(3);
+	list[0] = {color:boardState[6],x:0,y:6};
+	list[1] = {color:boardState[15],x:1,y:7};
+	list[2] = {color:boardState[14],x:1,y:6};
+	return list;
     }else if (x == 7 && y == 7){
-		var list = new Array[3];
-		list[0] = {color:boardState[63],x:7,y:6};
-		list[1] = {color:boardState[6*8+7],x:6,y:7};
-		list[2] = {color:boardState[6*8+6],x:6,y:6};
-		return list;
+	var list = new Array(3);
+	list[0] = {color:boardState[63],x:7,y:6};
+	list[1] = {color:boardState[6*8+7],x:6,y:7};
+	list[2] = {color:boardState[6*8+6],x:6,y:6};
+	return list;
     }else if (x == 7 && y == 0){
-		var list = new Array(3);
-		list[0] = {color:boardState[6*8],x:6,y:0};
-		list[1] = {color:boardState[7*8+1],x:7,y:1};
-		list[2] = {color:boardState[6*8+1],x:6,y:1};
-		return list;
+	var list = new Array(3);
+	list[0] = {color:boardState[6*8],x:6,y:0};
+	list[1] = {color:boardState[7*8+1],x:7,y:1};
+	list[2] = {color:boardState[6*8+1],x:6,y:1};
+	return list;
     }else{
-		var list = new Array(8);
-		list[0] = {color:boardState[x*8+(y-1)],x:x,y:(y-1)};
-		list[1] = {color:boardState[x*8+(y+1)],x:x,y:(y+1)};
-		list[2] = {color:boardState[(x-1)*8+(y-1)],x:(x-1),y:(y-1)};
-		list[3] = {color:boardState[(x+1)*8+(y+1)],x:(x+1),y:(y+1)};
-		list[4] = {color:boardState[(x-1)*8+(y)],x:(x-1),y:y};
-		list[5] = {color:boardState[(x+1)*8+(y-1)],x:(x+1),y:(y-1)};
-		list[6] = {color:boardState[(x-1)*8+(y+1)],x:(x-1),y:(y+1)};
-		list[7] = {color:boardState[(x+1)*8+y],x:(x+1),y:y};
-		return list;
+	var list = new Array(8);
+	list[0] = {color:boardState[x*8+(y-1)],x:x,y:(y-1)};
+	list[1] = {color:boardState[x*8+(y+1)],x:x,y:(y+1)};
+	list[2] = {color:boardState[(x-1)*8+(y-1)],x:(x-1),y:(y-1)};
+	list[3] = {color:boardState[(x+1)*8+(y+1)],x:(x+1),y:(y+1)};
+	list[4] = {color:boardState[(x-1)*8+(y)],x:(x-1),y:y};
+	list[5] = {color:boardState[(x+1)*8+(y-1)],x:(x+1),y:(y-1)};
+	list[6] = {color:boardState[(x-1)*8+(y+1)],x:(x-1),y:(y+1)};
+	list[7] = {color:boardState[(x+1)*8+y],x:(x+1),y:y};
+	return list;
     }
 }
 
@@ -209,25 +210,25 @@ function checkFlippings(x,y){
 function checkAround(x,y){
 	
     if (x == 0 && y == 0){
-		if (boardState[x*8+(y+1)] == "green" && boardState[(x+1)*8+y] == "green" &&	boardState[(x+1)*8+(y+1)] == "green"){
+		if (boardState[x*8+(y+1)] == "green" && boardState[(x+1)*8+y] == "green" &&	boardState[(x+1)*8+(y+1)] == "green") {
 			return false;
 		}else{
 			return true;
 		}
     }else if (x == 7 && y == 0){
-		if(boardState[x*8+(y+1)] == "green" && boardState[(x-1)*8+y] == "green" && boardState[(x-1)*8+(y+1)] == "green"){
+		if(boardState[x*8+(y+1)] == "green" && boardState[(x-1)*8+y] == "green" && boardState[(x-1)*8+(y+1)] == "green") {
 			return false;
 		}else{
 			return true;
 		}
     }else if (x == 7 && y == 7){
-		if(boardState[x*8+(y-1)] == "green" && boardState[(x-1)*8+y] == "green" && boardState[(x-1)*8+(y-1)] == "green"){
+		if(boardState[x*8+(y-1)] == "green" && boardState[(x-1)*8+y] == "green" && boardState[(x-1)*8+(y-1)] == "green") {
 			return false;
 		}else{
 			return true;
 		}
     }else if (x == 0 && y == 7){
-		if(boardState[x*8+(y-1)] == "green" && boardState[(x+1)*8+y] == "green" && boardState[(x+1)*8+(y-1)] == "green"){
+		if(boardState[x*8+(y-1)] == "green" && boardState[(x+1)*8+y] == "green" && boardState[(x+1)*8+(y-1)] == "green") {
 			return false;
 		}else{
 			return true;
