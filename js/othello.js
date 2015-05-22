@@ -3,7 +3,7 @@ var boardState = new Array(64);
 
 //Temporary flag to decide whose turn it is
 var flag = "black";
-
+var flipFlag = 0;
 //delay for animations
 var delay = 200
 
@@ -149,7 +149,7 @@ function updateScore(){
 
 //Calculates which square the user clicked on and places a tile in the correct index in boardState
 function placetile(x,y){
-    console.log(x+","+y);
+   
     var color = "";
     
     if (flag == "black"){
@@ -211,16 +211,16 @@ function checkFlippings(x,y){
     var i;
     var flipped = 0;
     var counter;
-    
+    var allFlipList = [];
     for (i=0;i < list.length; i++){
-	var flipList = [];
+	flipList = [];
 	counter = 0;	
 	if (boardState[list[i].x*8+list[i].y] == flag || boardState[list[i].x*8+list[i].y] == "green"){
 	    continue;	
 	} 
 
 	if ((list[i].x - x) == 0){
-	    console.log("halli------------------------------------------------------------");
+	    
 	    k = 2 //This is for helping animateFlip to handle this corner case.
 	    newY = list[i].y;
 	    newX = list[i].x;
@@ -237,7 +237,7 @@ function checkFlippings(x,y){
 		counter++;
 	    }
 	}else{
-	    console.log("hallo------------------------------------------------------------");
+	    
 	    k = (list[i].y - y)/(list[i].x - x);
 	    m = list[i].y-(list[i].x*k);
 
@@ -245,7 +245,7 @@ function checkFlippings(x,y){
 	    newX = list[i].x;
 	    
 	    while (boardState[newX*8+newY] != flag && boardState[newX*8+newY] != "green" && (newX >= 0 && newX <= 7 && newY >= 0 && newY <= 7)){
-		console.log(boardState[newX*8+newY]+", "+newX+","+newY);
+		
 		
 		flipList.push({x:newX,y:newY})
 		if (list[i].x > x){
@@ -258,21 +258,32 @@ function checkFlippings(x,y){
 	    }
 	}
 
-	if (boardState[newX*8+newY] === "green" || newX < 0 || newX >7 || newY < 0 || newY >7){
-	    flipList = [];   
+	if (boardState[newX*8+newY] === "green" || newX < 0 || newX >7 || newY < 0 || newY >7) {
+	    
+	    flipList = [];
 	} else {
 	    placetile(x,y);
 	    drawState();
 	    for (var j = 0;j < flipList.length;j++){
 		boardState[flipList[j].x*8+flipList[j].y] = flag;		
 	    }
-	    var temp = 0;
-	    var step = 1;
-	    (function(k,list,step,temp){setTimeout(function(){animateFlip(k,list,step,temp)},delay)})(k,flipList,1,0);
+	    allFlipList.push(flipList);	    
 	    flipList = [];
 	    flipped++;
 	}
 	
+    }
+    
+    for(var j= 0;j < allFlipList.length;j++) {
+	console.log(j);
+	console.log(allFlipList.length-1);
+	if(j == allFlipList.length-1) {
+	
+	    (function(k,list,step,temp,f){setTimeout(function(){animateFlip(k,list,step,temp,f)},delay)})(k,allFlipList[j],1,0,1);
+	} else {
+	    console.log("asd");
+	    (function(k,list,step,temp,f){setTimeout(function(){animateFlip(k,list,step,temp,f)},delay)})(k,allFlipList[j],1,0,0);
+	}
     }
     
     if (flipped == 0){
@@ -281,18 +292,21 @@ function checkFlippings(x,y){
     return true;
 }
 
-function animateFlip(k,list,step,i) {
-    if(i == list.length) {
-	if (flag == "black"){	
+function animateFlip(k,list,step,i,f) {
+    if(i == list.length && f == 0) {
+	drawState();
+	return;
+    } else if (i == list.length && f == 1) {
+
+	if (flag == "black") {	
 	    flag = "white";
-	}else {
+	} else {
 	    flag = "black";
 	}
 	drawState();
-
 	return;
     }
-    console.log(k + ","+list[i].x+","+step+","+i);
+    
     var color1; 
     var color2;
     var canvas = document.getElementById('state');
@@ -301,7 +315,7 @@ function animateFlip(k,list,step,i) {
     var x = (canvas.height/8)*list[i].y+((canvas.height/8)/2);
     
     
-    if(flag == "black") {
+    if (flag == "black") {
 	color1 = "black";
 	color2 = "white";
     } else {
@@ -322,9 +336,8 @@ function animateFlip(k,list,step,i) {
 	    ctx.fillRect(x-calcRadius(),y-(canvas.height/80),calcRadius()*2,(canvas.height/80));
 	    ctx.fillStyle = color2;
 	    ctx.fillRect(x-calcRadius(),y,calcRadius()*2,(canvas.height/80));
-	    //ctx.arc(x,y,calcRadius(),0,2*Math.PI);
 	    step = 2;
-	    (function(k,list,step,temp){setTimeout(function(){animateFlip(k,list,step,temp)},delay)})(k,list,2,i);
+	    (function(k,list,step,temp,f){setTimeout(function(){animateFlip(k,list,step,temp,f)},delay)})(k,list,2,i,f);
 	} else if(k == 1) {
 	    ctx.beginPath();
 	    ctx.fillStyle = "rgb(0,102,0)";
@@ -335,9 +348,8 @@ function animateFlip(k,list,step,i) {
 	    ctx.fillRect(x-calcRadius(),y-(canvas.height/80),calcRadius()*2,(canvas.height/80));
 	    ctx.fillStyle = color2;
 	    ctx.fillRect(x-calcRadius(),y,calcRadius()*2,(canvas.height/80));
-
 	    step = 2;
-	    (function(k,list,step,temp){setTimeout(function(){animateFlip(k,list,step,temp)},delay)})(k,list,2,i);
+	    (function(k,list,step,temp,f){setTimeout(function(){animateFlip(k,list,step,temp,f)},delay)})(k,list,2,i,f);
 	    /*var radius = calcRadius();
             var tmpX = x + (radius/Math.sqrt(2));
 	    var tmpY = y + (radius/Math.sqrt(2));
@@ -358,7 +370,7 @@ function animateFlip(k,list,step,i) {
 	    ctx.fillStyle = color2;
 	    ctx.fillRect(x-calcRadius(),y,calcRadius()*2,(canvas.height/80));
 	    step = 2;
-	    (function(k,list,step,temp){setTimeout(function(){animateFlip(k,list,step,temp)},delay)})(k,list,2,i);
+	    (function(k,list,step,temp,f){setTimeout(function(){animateFlip(k,list,step,temp,f)},delay)})(k,list,2,i,f);
 	} else if(k == 2) { //Special case for horizontal lines
 	    ctx.beginPath();
 	    ctx.fillStyle = "rgb(0,102,0)";
@@ -371,7 +383,7 @@ function animateFlip(k,list,step,i) {
 	    ctx.fillRect(x-(canvas.height/80),y-calcRadius(),(canvas.width/80),calcRadius()*2);
 	    //ctx.arc(x,y,calcRadius(),0,2*Math.PI);
 	    step = 2;
-	    (function(k,list,step,temp){setTimeout(function(){animateFlip(k,list,step,temp)},delay)})(k,list,2,i);
+	    (function(k,list,step,temp,f){setTimeout(function(){animateFlip(k,list,step,temp,f)},delay)})(k,list,2,i,f);
 	}
 
     } else if (step == 2) {
@@ -380,7 +392,7 @@ function animateFlip(k,list,step,i) {
 	ctx.arc(x,y,calcRadius(),0,2*Math.PI);
 	ctx.fill();
 	ctx.closePath();
-	(function(k,list,step,temp){setTimeout(function(){animateFlip(k,list,step,temp)},delay)})(k,list,1,i+1);
+	(function(k,list,step,temp,f){setTimeout(function(){animateFlip(k,list,step,temp,f)},delay)})(k,list,1,i+1,f);
 	
     }
 }
@@ -472,7 +484,7 @@ function checkValidity(){
     }else if (checkAround(x,y) == false){
 	//alert("You need to place the tile adjacent to another tile");
 	return;
-    }else if (checkFlippings(x,y) == false){
+    }else if (checkFlippings(x,y) == false) {
 	//alert("You must place the tile in a place so you can flip tiles(note to code: this is a bad error message");
 	return;
     }
@@ -484,7 +496,6 @@ function checkValidity(){
 	flag = "black";
     }*/    
     //updateScore();
-    
 }
 
 function calcRadius(){
