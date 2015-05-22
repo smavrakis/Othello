@@ -2,14 +2,16 @@
 var boardState = new Array(64);
 
 //Temporary flag to decide whose turn it is
-var flag = "black";
+var flag = "white";
 
 //delay for animations
 var delay = 200
 
 //Initializes the boardState, calls resizeGame() and sets up the two EventListeners - one for user interaction and one for window resize
 function draw(){
-    
+
+	flag = "white";
+	
     for(var i=0;i<64;i++) {
 	boardState[i]="green";
     }
@@ -127,11 +129,13 @@ function updateScore(){
     if (flag == "black"){
 	white.style.textDecoration = "none";
 	black.style.textDecoration = "underline";
-	
+    black.style.background = "#c7c7c7"
+	white.style.background = "#DDDDDD"	
     }else if (flag == "white"){
 	white.style.textDecoration = "underline";
 	black.style.textDecoration = "none";
-	
+	black.style.background = "#DDDDDD"
+	white.style.background = "#C7C7C7"	
     }
 
     if (score_white + score_black >= 64){
@@ -159,11 +163,13 @@ function placetile(x,y){
 	color = "white";
 	//flag = "black";
     }
-    
+	tile_sound.play();
     boardState[x*8+y] = color;
     
     //drawState();
 }
+
+
 
 function getAdjacentTiles(x,y){
     
@@ -282,15 +288,14 @@ function checkFlippings(x,y){
 }
 
 function animateFlip(k,list,step,i) {
-    if(i == list.length) {
+	if(i == list.length) {
 	if (flag == "black"){	
 	    flag = "white";
 	}else {
 	    flag = "black";
 	}
-	drawState();
-
-	return;
+		drawState();
+		return;
     }
     console.log(k + ","+list[i].x+","+step+","+i);
     var color1; 
@@ -522,3 +527,21 @@ function drawState(){
     
     updateScore();
 }
+
+function mute() {
+	console.log("jaharp");
+	if (tile_sound.muted == true) {
+		tile_sound.muted = false;
+		document.getElementById("mute_button").innerHTML = "Mute";
+	}
+	else {
+		tile_sound.muted = true;
+		document.getElementById("mute_button").innerHTML = "Unmute";
+	}
+}
+
+//sound init
+var tile_sound = new Audio("sound/tile_placed.mp3");
+tile_sound.volume = .4;
+tile_sound.load();
+
