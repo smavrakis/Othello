@@ -11,7 +11,7 @@
 	<body onload="draw();">	
 	
 		<div id="score-container">
-			<div class="score-node" id="score-black"></div>
+		  <div class="score-node" id="score-black"></div>
 			<div class="score-node" id="score-white"></div>			
 			<button id="reset_button" onclick="draw()">Reset Game</button>
 		</div>
@@ -20,7 +20,7 @@
 			<canvas id="board">Your browser does not support HTML5 Canvas.</canvas>
 			<canvas id="state">Your browser does not support HTML5 Canvas.</canvas>
 		</div>
-		
+		<button id="mute_button" onclick="mute()">Mute</button>
 		<audio id="myMusic" src="music/SolemnVow.mp3" controls autoplay loop>
 			<p>If you are reading this, it is because your browser does not support the audio element.</p>
 		</audio>		
