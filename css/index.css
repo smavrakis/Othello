@@ -7,8 +7,10 @@ canvas{
 #board-container{	
 	position: fixed;	
 	top: 50%;
-	left: 50%;  
-	transform: translate(-50%, -50%);
+	left: 50%;
+	-webkit-transform:translate(-50%, -50%);
+	transform:translate(-50%, -50%);
+
 }
 
 #board{	 
@@ -23,7 +25,8 @@ canvas{
 	position: fixed;
 	width: 20%;
 	top: 90%;
-	left: 50%;  
+	left: 50%;
+	-webkit-transform: translateX(-50%);  	
 	transform: translateX(-50%);  	
 }
 
@@ -45,7 +48,8 @@ canvas{
 	position: fixed;
 	width: 30%;
 	height: 20%;	
-	left: 50%;  
+	left: 50%;
+	-webkit-transform: translateX(-50%);  	
 	transform: translateX(-50%);
 }
 
@@ -67,7 +71,8 @@ canvas{
 #reset_button {
 	position: absolute;
 	top: 60%;
-	left: 50%;  
+	left: 50%;
+	-webkit-transform: translateX(-50%);  	
 	transform: translateX(-50%);
 	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
 	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
