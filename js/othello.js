@@ -2,16 +2,16 @@
 var boardState = new Array(64);
 
 //Temporary flag to decide whose turn it is
-var flag = "white";
+var flag = "black";
 
 
 //delay for animations
 var delay = 200
 
 //Initializes the boardState, calls resizeGame() and sets up the two EventListeners - one for user interaction and one for window resize
-function draw(){
-
-	flag = "white";
+function draw(){	
+	
+	flag = "black";
 	
     for(var i=0;i<64;i++) {
 	boardState[i]="green";
@@ -546,11 +546,11 @@ function mute() {
 	console.log("jaharp");
 	if (tile_sound.muted == true) {
 		tile_sound.muted = false;
-		document.getElementById("mute_button").innerHTML = "Mute";
+		document.getElementById("mute_button").innerHTML = "Mute tiles";
 	}
 	else {
 		tile_sound.muted = true;
-		document.getElementById("mute_button").innerHTML = "Unmute";
+		document.getElementById("mute_button").innerHTML = "Unmute tiles";
 	}
 }
 
