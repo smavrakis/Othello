@@ -215,6 +215,29 @@ canvas{
     left:0;
 }
 
+button.flag {    
+    border-width: 2px;
+    border-color: #282828 #282828 hsl(0, 0%, 11%);
+    border-radius: 3px;    
+    background-size: contain;
+	cursor:pointer;
+    width:8%;
+    height:17%;
+	position: fixed;
+}
+
+#swedishFlag {
+    background-image: url("../img/swedish_flag.jpg"); 	
+    left: 81%;
+    bottom: 5%;	
+}
+
+#britishFlag {
+    background-image: url("../img/union_jack.png");	
+    left: 90%; 
+    bottom: 5%;
+}
+
 /* CSS animation */
 
 @-webkit-keyframes fadeIn {

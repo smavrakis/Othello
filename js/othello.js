@@ -4,9 +4,17 @@ var boardState = new Array(64);
 //Temporary flag to decide whose turn it is
 var flag = "black";
 
+//Language used
+var language = "en";
 
 //delay for animations
 var delay = 200
+
+// Dictionary for the internationalization part
+var resources = {  
+  en: { translation: { 'reset': 'Reset Game', 'mute': 'Mute tiles', 'tip': "This is each player's score. The player's turn is indicated by the underline under their score." } },            
+  se: { translation: { 'reset': 'Starta om', 'mute': 'Stäng av brickljud', 'tip': "Detta är varje spelares poäng. Strecket under poängen visar vilken spelares tur det är." } }
+};
 
 //Initializes the boardState, calls resizeGame() and sets up the two EventListeners - one for user interaction and one for window resize
 function draw(){	
@@ -24,11 +32,39 @@ function draw(){
 	boardState[3*8+4] = "black";
     }
     
-    resizeGame();	
+    resizeGame();
+
+	i18n.init({ resStore: resources, lng: language }, function(t) {		
+		document.getElementById("reset_button").innerHTML = t("reset");
+		document.getElementById("mute_button").innerHTML = t("mute");
+		document.getElementById("score-tip").innerHTML = t("tip");
+	});
     
     var canvas2 = document.getElementById('state');
     canvas2.addEventListener('click',checkValidity,false);
     window.addEventListener('resize', resizeGame, false);    
+}
+
+//Changes the language to Swedish and translates all the elements
+function make_lang_se() {
+    language = "se";
+	
+	i18n.init({ resStore: resources, lng: language }, function(t) {		
+		document.getElementById("reset_button").innerHTML = t("reset");
+		document.getElementById("mute_button").innerHTML = t("mute");
+		document.getElementById("score-tip").innerHTML = t("tip");		
+	});
+}
+
+//Changes the language to English and translates all the elements
+function make_lang_en() {
+    language = "en";
+	
+	i18n.init({ resStore: resources, lng: language }, function(t) {		
+		document.getElementById("reset_button").innerHTML = t("reset");
+		document.getElementById("mute_button").innerHTML = t("mute");
+		document.getElementById("score-tip").innerHTML = t("tip");
+	});
 }
 
 //Draws the board

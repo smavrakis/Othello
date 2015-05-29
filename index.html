@@ -6,24 +6,28 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
 		<link rel="stylesheet" type="text/css" href="css/index.css" />
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script src="js/i18next-1.9.0.js"></script>		
 	</head>	
 	<body onload="draw();">	
 	
 		<div id="score-container">
 			<div class="score-node" id="score-black"></div>
 			<div class="score-node" id="score-white"></div>			
-			<button id="reset_button" onclick="draw()">Reset Game</button>
+			<button id="reset_button" onclick="draw()"></button>
 			<div class="help-tip">
-				<p>This is the score of each player. The player's turn is indicated by the underline under their score.</p>
+				<p id="score-tip"></p>
 			</div>
+			<button class="flag" id ="swedishFlag" onclick = "make_lang_se()"></button>
+            <button class="flag" id ="britishFlag" onclick = "make_lang_en()"></button> 
 		</div>
 		
 		<div id="board-container">
 			<canvas id="board">Your browser does not support HTML5 Canvas.</canvas>
 			<canvas id="state">Your browser does not support HTML5 Canvas.</canvas>
 		</div>
-		<button id="mute_button" onclick="mute()">Mute tiles</button>
+
+		<button id="mute_button" onclick="mute()"></button>
 		<audio id="myMusic" src="music/SolemnVow.mp3" controls autoplay loop>
 			<p>If you are reading this, it is because your browser does not support the audio element.</p>
 		</audio>		
@@ -31,6 +35,6 @@
 		<!--
 		The script is placed as late as possible in the loading process.
 		-->
-		<script src="js/othello.js"></script>
+		<script src="js/othello.js"></script>		
 	</body>
 </html>
