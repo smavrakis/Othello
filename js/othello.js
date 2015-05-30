@@ -194,7 +194,7 @@ function updateScore(){
 		white.style.background = "#C7C7C7"	
     }
 
-    if (score_white + score_black >= 64){
+    /*if (score_white + score_black >= 64){
 		if (score_white > score_black){
 			alert("White wins!");
 		}else if(score_white < score_black){
@@ -203,7 +203,7 @@ function updateScore(){
 			alert("It's a draw!");
 		}
 		window.location.replace("index.html");
-    }
+    }*/
 }
 
 
