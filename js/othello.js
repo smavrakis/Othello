@@ -38,8 +38,8 @@ function draw(){
 		document.getElementById("reset_button").innerHTML = t("reset");
 		document.getElementById("mute_button").innerHTML = t("mute");
 		document.getElementById("score-tip").innerHTML = t("tip");
-	});
-    
+	});    
+	
     var canvas2 = document.getElementById('state');
     canvas2.addEventListener('click',checkValidity,false);
     window.addEventListener('resize', resizeGame, false);    
@@ -144,17 +144,17 @@ function resizeStats(){
     }
 }
 
-//Updates the score and checks for a win condition
+//Updates the score and checks for valid moves and a win condition
 function updateScore(){
     var score_white = 0;
     var score_black = 0;
     
     for (var i=0;i<64;i++){
-	if (boardState[i] == "white"){
-	    score_white++;
-	}else if ((boardState[i] == "black")){
-	    score_black++;
-	}		
+		if (boardState[i] == "white"){
+			score_white++;
+		}else if ((boardState[i] == "black")){
+			score_black++;
+		}		
     }
     
     var white = document.getElementById('score-white');
@@ -162,28 +162,47 @@ function updateScore(){
     
     white.innerHTML = score_white;
     black.innerHTML = score_black;
+
+	if (checkForValidMoves(flag) == false){
+		if ((flag == "black" && checkForValidMoves("white") == false) || (flag == "white" && checkForValidMoves("black") == false)){
+			if (score_white > score_black){
+				alert("No valid moves left, white wins!");
+			}else if(score_white < score_black){
+				alert("No valid moves left, black wins!");				
+			}else{
+				alert("No valid moves left, it's a draw!");
+			}
+			window.location.replace("index.html");
+		}else{
+			if (flag == "black"){
+				flag = "white";
+			}else{
+				flag = "black";
+			}
+		}
+	}
     
     if (flag == "black"){
-	white.style.textDecoration = "none";
-	black.style.textDecoration = "underline";
-    black.style.background = "#c7c7c7"
-	white.style.background = "#DDDDDD"	
+		white.style.textDecoration = "none";
+		black.style.textDecoration = "underline";
+		black.style.background = "#c7c7c7"
+		white.style.background = "#DDDDDD"	
     }else if (flag == "white"){
-	white.style.textDecoration = "underline";
-	black.style.textDecoration = "none";
-	black.style.background = "#DDDDDD"
-	white.style.background = "#C7C7C7"	
+		white.style.textDecoration = "underline";
+		black.style.textDecoration = "none";
+		black.style.background = "#DDDDDD"
+		white.style.background = "#C7C7C7"	
     }
 
     if (score_white + score_black >= 64){
-	if (score_white > score_black){
-	    alert("White wins!");
-	}else if(score_white < score_black){
-	    alert("Black wins!");
-	}else{
-	    alert("It's a draw!");
-	}
-	window.location.replace("index.html");
+		if (score_white > score_black){
+			alert("White wins!");
+		}else if(score_white < score_black){
+			alert("Black wins!");
+		}else{
+			alert("It's a draw!");
+		}
+		window.location.replace("index.html");
     }
 }
 
@@ -206,8 +225,91 @@ function placetile(x,y){
     //drawState();
 }
 
+//Checks if a player has a valid move
+function checkForValidMoves(player_color){
+	var opposite_flag = "";
+	var valid = false;
+	
+	if (player_color == "black"){		
+		opposite_flag = "white";
+	}else if (player_color == "white"){		
+		opposite_flag = "black";
+	}
+	
+	for (var i=0;i<64;i++){
+		if (boardState[i] == player_color){			
+			var list = getAdjacent(i);			
+			
+			for (var j=0;j<list.length;j++){
+				if (boardState[list[j]] == opposite_flag){					
+					var position = list[j];
+					
+					if (position == i-9){
+						if (boardState[position-9] == "green"){
+							valid = true;
+							break;
+						}
+					}else if(position == i-8){
+						if (boardState[position-8] == "green"){
+							valid = true;
+							break;
+						}
+					}else if(position == i-7){
+						if (boardState[position-7] == "green"){
+							valid = true;
+							break;
+						}
+					}else if(position == i+1){
+						if (boardState[position+1] == "green"){
+							valid = true;
+							break;
+						}
+					}else if(position == i-1){
+						if (boardState[position-1] == "green"){
+							valid = true;
+							break;
+						}
+					}else if(position == i+7){
+						if (boardState[position+7] == "green"){
+							valid = true;
+							break;
+						}
+					}else if(position == i+8){
+						if (boardState[position+8] == "green"){
+							valid = true;
+							break;
+						}
+					}else if(position == i+9){
+						if (boardState[position+9] == "green"){
+							valid = true;
+							break;
+						}
+					}
+				}
+			}
+		}
+    }
 
+	return valid;
+}
 
+//Returns adjacent tiles given position in the array
+function getAdjacent(x){
+	var list = new Array(8);
+	
+	list[0] = x-9;
+	list[1] = x-8;
+	list[2] = x-7;
+	list[3] = x+1;
+	list[4] = x-1;
+	list[5] = x+7;
+	list[6] = x+8;
+	list[7] = x+9;
+	
+	return list;
+}
+
+//Returns adjacent tiles given coordinates
 function getAdjacentTiles(x,y){
     
     if (x == 0 && y == 0){
@@ -224,15 +326,15 @@ function getAdjacentTiles(x,y){
 	return list;
     }else if (x == 7 && y == 7){
 	var list = new Array(3);
-	list[0] = {color:boardState[63],x:7,y:6};
-	list[1] = {color:boardState[6*8+7],x:6,y:7};
-	list[2] = {color:boardState[6*8+6],x:6,y:6};
+	list[0] = {color:boardState[62],x:7,y:6};
+	list[1] = {color:boardState[55],x:6,y:7};
+	list[2] = {color:boardState[54],x:6,y:6};
 	return list;
     }else if (x == 7 && y == 0){
 	var list = new Array(3);
-	list[0] = {color:boardState[6*8],x:6,y:0};
-	list[1] = {color:boardState[7*8+1],x:7,y:1};
-	list[2] = {color:boardState[6*8+1],x:6,y:1};
+	list[0] = {color:boardState[48],x:6,y:0};
+	list[1] = {color:boardState[57],x:7,y:1};
+	list[2] = {color:boardState[49],x:6,y:1};
 	return list;
     }else{
 	var list = new Array(8);
@@ -331,7 +433,8 @@ function checkFlippings(x,y){
     
     if (flipped == 0){
 	return false;
-    }
+    }	
+	
     return true;
 }
 
@@ -531,7 +634,7 @@ function checkValidity(){
     }else if (checkFlippings(x,y) == false) {
 	//alert("You must place the tile in a place so you can flip tiles(note to code: this is a bad error message");
 	return;
-    }
+    }	
     
 /*
     if (flag == "black"){	
