@@ -113,7 +113,8 @@ canvas{
 #mute_button {
 	position: absolute;
 	top: 83%;
-	left: 50%;  
+	left: 50%;
+	-webkit-transform: translateX(-50%);
 	transform: translateX(-50%);
 	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
 	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
