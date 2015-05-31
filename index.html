@@ -10,7 +10,20 @@
 		<script src="js/i18next-1.9.0.js"></script>		
 	</head>	
 	<body onload="draw();">	
-	
+
+	  <div id="overlay"></div>
+	  <div id="pop-contain">
+		<div data-pop="slide-down" id="popup">
+		  <div class="popup-controls">
+			<span id="popup-close">&times</span>
+		  </div>
+		  <div class="popup-content">
+			<h3>How to play</h3>
+			<p>Othello is played between two players. Player one uses white tiles and player two uses black tiles.</p>
+		  </div>
+		</div>
+	  </div>
+	  
 		<div id="score-container">
 			<div class="score-node" id="score-black"></div>
 			<div class="score-node" id="score-white"></div>			

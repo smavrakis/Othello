@@ -698,3 +698,21 @@ var tile_sound = new Audio("sound/tile_placed.mp3");
 tile_sound.volume = .4;
 tile_sound.load();
 
+//Tutorial
+//initializing vars
+var closePopup = document.getElementById("popup-close");
+var overlay = document.getElementById("overlay");
+var popup = document.getElementById("popup");
+var tutorialButton = document.getElementById("tutorial_button");
+
+//close popup event
+closePopup.onclick = function() {
+	overlay.className = '';
+	popup.className = '';
+};
+
+//show overlay and popup;
+tutorialButton.onclick = function() {
+	overlay.className = 'show';
+	popup.className = 'show';
+}
