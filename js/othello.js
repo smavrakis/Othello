@@ -353,6 +353,8 @@ function getAdjacentTiles(x,y){
     }
 }
 
+
+
 function checkFlippings(x,y){
     var list = getAdjacentTiles(x,y);    
     var k,m,newX,newY;
@@ -426,48 +428,48 @@ function checkFlippings(x,y){
 	
     }
     
-    for(var j= 0;j < allFlipList.length;j++) {
+    /*for(var j= 0;j < allFlipList.length;j++) {
+
 	console.log(j);
 	console.log(allFlipList.length-1);
 	if(j == allFlipList.length-1) {
-	
+	    
 	    (function(k,list,step,temp,f){setTimeout(function(){animateFlip(k,list,step,temp,f)},delay)})(k,allFlipList[j],1,0,1);
 	} else {
-	    
 	    (function(k,list,step,temp,f){setTimeout(function(){animateFlip(k,list,step,temp,f)},delay)})(k,allFlipList[j],1,0,0);
 	}
-    }
+    } */
     
-    if (flipped == 0){
+    if (flipped == 0) {
 	return false;
     }	
-	
+    (function(k,list,step,temp,f){setTimeout(function(){animateFlip(k,list,step,temp,f)},delay)})(k,allFlipList,1,0,0);
     return true;
 }
 
 
-function animateFlip(k,list,step,i,f) {
-    if(i == list.length && f == 0) {
+function animateFlip(k,list,step,i,j) {
+    /*if (i == list.length && f == 0) {
 	drawState();
 	return;
     } else if (i == list.length && f == 1) {
-
 	if (flag == "black") {	
 	    flag = "white";
 	} else {
 	    flag = "black";
 	}
-		drawState();
-		return;
-    }
+
+	drawState();
+	return;
+	}*/
+    var flist = list[j];
     
     var color1; 
     var color2;
     var canvas = document.getElementById('state');
     var ctx = canvas.getContext('2d');
-    var y = (canvas.width/8)*list[i].x+((canvas.width/8)/2);
-    var x = (canvas.height/8)*list[i].y+((canvas.height/8)/2);
-    
+    var y = (canvas.width/8)*flist[i].x+((canvas.width/8)/2);
+    var x = (canvas.height/8)*flist[i].y+((canvas.height/8)/2);
     
     if (flag == "black") {
 	color1 = "black";
@@ -491,7 +493,7 @@ function animateFlip(k,list,step,i,f) {
 	    ctx.fillStyle = color2;
 	    ctx.fillRect(x-calcRadius(),y,calcRadius()*2,(canvas.height/80));
 	    step = 2;
-	    (function(k,list,step,temp,f){setTimeout(function(){animateFlip(k,list,step,temp,f)},delay)})(k,list,2,i,f);
+	    (function(k,list,step,temp,f){setTimeout(function(){animateFlip(k,list,step,temp,f)},delay)})(k,list,2,i,j);
 	} else if(k == 1) {
 	    ctx.beginPath();
 	    ctx.fillStyle = "rgb(0,102,0)";
@@ -503,16 +505,7 @@ function animateFlip(k,list,step,i,f) {
 	    ctx.fillStyle = color2;
 	    ctx.fillRect(x-calcRadius(),y,calcRadius()*2,(canvas.height/80));
 	    step = 2;
-	    (function(k,list,step,temp,f){setTimeout(function(){animateFlip(k,list,step,temp,f)},delay)})(k,list,2,i,f);
-	    /*var radius = calcRadius();
-            var tmpX = x + (radius/Math.sqrt(2));
-	    var tmpY = y + (radius/Math.sqrt(2));
-	    ctx.fillStyle = color1;
-	    ctx.beginPath();
-	    ctx.fillStyle = color1;
-	    ctx.moveTo(tmpX,tmpY);
-	    ctx.lineTo();
-	    ctx.lineTo(x-(radius/Math.sqrt(2)),y-(radius/Math.sqrt(2)));*/
+	    (function(k,list,step,temp,f){setTimeout(function(){animateFlip(k,list,step,temp,f)},delay)})(k,list,2,i,j);
 	} else if(k == -1) {
 	    ctx.beginPath();
 	    ctx.fillStyle = "rgb(0,102,0)";
@@ -524,7 +517,7 @@ function animateFlip(k,list,step,i,f) {
 	    ctx.fillStyle = color2;
 	    ctx.fillRect(x-calcRadius(),y,calcRadius()*2,(canvas.height/80));
 	    step = 2;
-	    (function(k,list,step,temp,f){setTimeout(function(){animateFlip(k,list,step,temp,f)},delay)})(k,list,2,i,f);
+	    (function(k,list,step,temp,f){setTimeout(function(){animateFlip(k,list,step,temp,f)},delay)})(k,list,2,i,j);
 	} else if(k == 2) { //Special case for horizontal lines
 	    ctx.beginPath();
 	    ctx.fillStyle = "rgb(0,102,0)";
@@ -535,21 +528,36 @@ function animateFlip(k,list,step,i,f) {
 	    ctx.fillRect(x,y-calcRadius(),(canvas.width/80),calcRadius()*2);
 	    ctx.fillStyle = color2;
 	    ctx.fillRect(x-(canvas.height/80),y-calcRadius(),(canvas.width/80),calcRadius()*2);
-	    //ctx.arc(x,y,calcRadius(),0,2*Math.PI);
 	    step = 2;
-	    (function(k,list,step,temp,f){setTimeout(function(){animateFlip(k,list,step,temp,f)},delay)})(k,list,2,i,f);
+	    (function(k,list,step,temp,f){setTimeout(function(){animateFlip(k,list,step,temp,f)},delay)})(k,list,2,i,j);
 	}
-
     } else if (step == 2) {
 	ctx.beginPath();
 	ctx.fillStyle = color1;
 	ctx.arc(x,y,calcRadius(),0,2*Math.PI);
 	ctx.fill();
 	ctx.closePath();
-	(function(k,list,step,temp,f){setTimeout(function(){animateFlip(k,list,step,temp,f)},delay)})(k,list,1,i+1,f);
+	i = i + 1;
+	if(i == list[j].length) {
+	    j = j + 1;
+	    if (j == list.length) {
+
+		if (flag == "black") {	
+		    flag = "white";
+		} else {
+		    flag = "black";
+		}
+		
+		drawState();
+		return;
+	    }
+	    i = 0;
+	}
 	
+	(function(k,list,step,temp,f){setTimeout(function(){animateFlip(k,list,step,temp,f)},delay)})(k,list,1,i,j);		
     }
 }
+    
 function checkAround(x,y){
     
     if (x == 0 && y == 0){
