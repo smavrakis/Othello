@@ -3,10 +3,14 @@ h3 {
 	margin-bottom: -3px;
 }
 
+#small {
+	font-size: 0.8em;
+}
+
 #tutorial-content {
 	display: inline-block;
 	vertical-align: middle;
-	font-size: 0.9em;
+	font-size: 0.85em;
 
 }
 
@@ -343,7 +347,7 @@ button.flag {
 	position: fixed;
 	background:rgba(0, 0, 0, 0.56);
 	width: 40%;
-	min-width: 250px;
+	min-width: 290px;
 	top: 50%;
 	height: 28%;
 	min-height: 170px;
