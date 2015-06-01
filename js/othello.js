@@ -4,6 +4,9 @@ var boardState = new Array(64);
 //Temporary flag to decide whose turn it is
 var flag = "black";
 
+//Flag for representing tutorialMode being active(1) or inactive(0)
+var tutorialMode = 0;
+
 //Language used
 var language = "en";
 
@@ -677,7 +680,25 @@ function drawState(){
 	    }	   
 	}	
     }
-    
+
+	
+	
+	//Tutorial
+	console.log("mode=" + tutorialMode);
+    if (tutorialMode == 1) {
+		overlay.className = 'show';
+		popup.className = 'show';
+		tutorialStep=4;
+		console.log("step: " + tutorialStep);
+		document.getElementById("tutorial-content").innerHTML = fetchTutorialContent(tutorialStep);
+		
+
+	} else {
+		console.log("TJENNA");
+		overlay.className = '';
+		popup.className = '';
+	}
+	
     updateScore();
 }
 
@@ -709,16 +730,62 @@ var tutorialButton = document.getElementById("tutorial_button");
 closePopup.onclick = function() {
 	overlay.className = '';
 	popup.className = '';
+	tutorialMode = 0;
 };
 
 //show overlay and popup;
 tutorialButton.onclick = function() {
+	tutorialMode = 1;
 	overlay.className = 'show';
 	popup.className = 'show';
+	
 }
 
+var tutorialStep = 1;
+
 function tutorialNext() {
-	console.log("tutorial");
-//	boardState[4*8+5] = "white";
-	checkValidity();
+	tutorialStep++;
+	var tutorialContent = document.getElementById("tutorial-content");
+	tutorialContent.innerHTML = fetchTutorialContent(tutorialStep);
+}
+
+function tutorialPrev() {
+	tutorialStep = tutorialStep - 1;
+	if (tutorialStep < 1) {
+		tutorialStep = 1;
+		overlay.className = '';
+		popup.className = '';
+	}
+	console.log(tutorialStep);
+	var tutorialContent = document.getElementById("tutorial-content");
+	tutorialContent.innerHTML = fetchTutorialContent(tutorialStep);
+}
+
+function fetchTutorialContent(step) {
+	switch (step) {
+		
+	case 1:
+		return "<h3>How to play Step: " + tutorialStep + "</h3><br>Othello is played between two players. Player one uses black tiles and player two uses white tiles. This tutorial will help you understant the rules of the game. Please press next to continue or feel free to close this box and start playing by yourself.</p>";
+		break;
+	case 2:
+		return "<h3>How to play Step: " + tutorialStep + "</h3><p>A valid placement is one such that the tile needs to be adjacent to another tile. You must also place the tile so you're in a position to flip the other players tiles. You're allowed to flip the other player tiles that are in a line with the placed and another one of your tiles.</p>"; 
+		break;
+	case 3:
+		var tryButton = document.getElementById("tutorial-next");
+		tryButton.innerHTML = "Try";
+		tryButton.setAttribute("onClick", "hideTutorial()");
+		
+		return "<h3>How to play Step: " + tutorialStep + "</h3><br><p>Press the try button and place a black tile somewhere adjacent to a white tile.</p>"; 
+		break;
+	case 4:
+		return "<h3>How to play Step: " + tutorialStep + "</h3><b><p>As you saw the white tile flipped......</p>"; 
+		break;
+	default:
+		console.log("no step match");
+	}
+}
+
+function hideTutorial () {
+		overlay.className = '';
+		popup.className = '';
 }
