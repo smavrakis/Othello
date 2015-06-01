@@ -15,8 +15,8 @@ var delay = 200
 
 // Dictionary for the internationalization part
 var resources = {  
-  en: { translation: { 'reset': 'Reset Game', 'mute': 'Mute tiles', 'tip': "This is each player's score. The player's turn is indicated by the underline under their score." } },            
-  se: { translation: { 'reset': 'Starta om', 'mute': 'Stäng av brickljud', 'tip': "Detta är varje spelares poäng. Strecket under poängen visar vilken spelares tur det är." } }
+	en: { translation: { 'reset': 'Reset Game', 'mute': 'Mute tiles', 'tip': "This is each player's score. The player's turn is indicated by the underline under their score.", 'tutorial': 'How to Play' } },            
+	se: { translation: { 'reset': 'Starta om', 'mute': 'Stäng av brickljud', 'tip': "Detta är varje spelares poäng. Strecket under poängen visar vilken spelares tur det är.", 'tutorial': 'Hur man spelar' } }
 };
 
 //Initializes the boardState, calls resizeGame() and sets up the two EventListeners - one for user interaction and one for window resize
@@ -41,6 +41,7 @@ function draw(){
 		document.getElementById("reset_button").innerHTML = t("reset");
 		document.getElementById("mute_button").innerHTML = t("mute");
 		document.getElementById("score-tip").innerHTML = t("tip");
+		document.getElementById("tutorial_button").innerHTML = t("tutorial");
 	});    
 	
     var canvas2 = document.getElementById('state');
@@ -55,7 +56,8 @@ function make_lang_se() {
 	i18n.init({ resStore: resources, lng: language }, function(t) {		
 		document.getElementById("reset_button").innerHTML = t("reset");
 		document.getElementById("mute_button").innerHTML = t("mute");
-		document.getElementById("score-tip").innerHTML = t("tip");		
+		document.getElementById("score-tip").innerHTML = t("tip");
+		document.getElementById("tutorial_button").innerHTML = t("tutorial");
 	});
 }
 
@@ -67,6 +69,7 @@ function make_lang_en() {
 		document.getElementById("reset_button").innerHTML = t("reset");
 		document.getElementById("mute_button").innerHTML = t("mute");
 		document.getElementById("score-tip").innerHTML = t("tip");
+		document.getElementById("tutorial_button").innerHTML = t("tutorial");
 	});
 }
 
@@ -226,18 +229,17 @@ function placetile(x,y){
 
 
 	//Tutorial
-	console.log("mode=" + tutorialMode);
+	//console.log("mode=" + tutorialMode);
     if (tutorialMode == 1) {
 		overlay.className = 'show';
 		popup.className = 'show';
 		tutorialStep++;
-		console.log("step: " + tutorialStep);
+		//console.log("step: " + tutorialStep);
 		document.getElementById("tutorial-next").innerHTML = "Next";
 		document.getElementById("tutorial-content").innerHTML = fetchTutorialContent(tutorialStep);
 		
 		
 	} else {
-		console.log("TJENNA");
 		overlay.className = '';
 		popup.className = '';
 	}
@@ -716,7 +718,6 @@ function drawState(){
 }
 
 function mute() {
-	console.log("jaharp");
 	if (tile_sound.muted == true) {
 		tile_sound.muted = false;
 		document.getElementById("mute_button").innerHTML = "Mute tiles";
@@ -744,6 +745,8 @@ closePopup.onclick = function() {
 	overlay.className = '';
 	popup.className = '';
 	tutorialMode = 0;
+	tutorialStart();
+	//tutorialStep = 1;
 	document.getElementById("tutorial-next").innerHTML = "Next";
 	
 };
@@ -751,7 +754,7 @@ closePopup.onclick = function() {
 //show overlay and popup;
 tutorialButton.onclick = function() {
 	tutorialMode = 1;
-	overlay.className = 'show';
+	tutorialStart();
 	popup.className = 'show';
 	
 }
@@ -766,17 +769,23 @@ function tutorialNext() {
 }
 
 function tutorialPrev() {
-	tutorialStep = tutorialStep - 1;
+	tutorialStep--;
 	if (tutorialStep < 1) {
-		tutorialStep = 1;
+		tutorialStart();
 		overlay.className = '';
 		popup.className = '';
 	}
-	console.log(tutorialStep);
 	var tutorialContent = document.getElementById("tutorial-content");
 	tutorialContent.innerHTML = fetchTutorialContent(tutorialStep);
 	document.getElementById("tutorial-next").innerHTML = "Next";
 }
+
+function tutorialStart() {
+	tutorialStep = 1;
+	document.getElementById("tutorial-content").innerHTML = fetchTutorialContent(1);
+	document.getElementById("tutorial-next").innerHTML = "Next"; 
+}
+
 
 function fetchTutorialContent(step) {
 	switch (step) {
@@ -785,6 +794,7 @@ function fetchTutorialContent(step) {
 		return "<h3>How to play Step: " + tutorialStep + "</h3><br>Othello is played between two players. Player one uses black tiles and player two uses white tiles. This tutorial will help you understant the rules of the game. Please press next to continue or feel free to close this box and start playing by yourself.</p> <p id='small'>(Pressing next will reset the board)</p>";
 		break;
 	case 2:
+		draw();
 		return "<h3>How to play Step: " + tutorialStep + "</h3><p>A valid placement is one such that the tile needs to be adjacent to another tile. You must also place the tile so you're in a position to flip the other players tiles. You're allowed to flip the other player tiles that are in a line with the placed and another one of your tiles.</p>"; 
 		break;
 	case 3:
