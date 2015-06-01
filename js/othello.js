@@ -674,7 +674,7 @@ function checkValidity(){
 		
     }else if (checkFlippings(x,y) == false) {
 		if (tutorialMode == 1)
-			alert("You must place the tile in a place so you can flip tiles(note to code: this is a bad error message");
+			alert("You must place the tile in a place such that you \"outflank\" your opponent's tiles");
 	return;
     }	
     
@@ -791,7 +791,13 @@ function tutorialPrev() {
 function tutorialStart() {
 	tutorialStep = 1;
 	document.getElementById("tutorial-content").innerHTML = fetchTutorialContent(1);
-	document.getElementById("tutorial-next").innerHTML = "Next"; 
+	document.getElementById("tutorial-next").innerHTML = "Next";
+	document.getElementById("tutorial-next").setAttribute("onClick", "tutorialNext()");
+}
+
+function tutorialEnd() {
+	popup.className = '';
+	tutorialStart();
 }
 
 
@@ -803,23 +809,24 @@ function fetchTutorialContent(step) {
 		break;
 	case 2:
 		draw();
-		return "<h3>How to play Step: " + tutorialStep + "</h3><p>A valid placement is one such that the tile needs to be adjacent to another tile. You must also place the tile so you're in a position to flip the other players tiles. You're allowed to flip the other player tiles that are in a line with the placed and another one of your tiles.</p>"; 
+		return "<h3>How to play Step: " + tutorialStep + "</h3><p>A valid placement is one such that the tile needs to be adjacent to another tile. You must also place the tile so you're in a position to flip the other player's tiles. You're allowed to flip the other player's tiles that are bordered at each end by your newly placed tile and an already placed tile of your color.</p>"; 
 		break;
 	case 3:
 		var tryButton = document.getElementById("tutorial-next");
 		tryButton.innerHTML = "Try";
 		tryButton.setAttribute("onClick", "hideTutorial()");
 		
-		return "<h3>How to play Step: " + tutorialStep + "</h3><br><p>Press the try button and place a tile in such a way that your tiles suround one or multiple tiles of the oponent while still being adjacent to some other tile.</p>"; 
+		return "<h3>How to play Step: " + tutorialStep + "</h3><br><p>Press the try button and place a tile in such a way that your tiles suround one (or multiple) tiles of the oponent while still being adjacent to some other tile.</p>"; 
 		break;
 	case 4:
 		return "<h3>How to play Step: " + tutorialStep + "</h3><br><p>As you saw the white tile flipped. It is now the oponents turn to place a tile. Press next to place the next tile.</p>"; 
 		break;
 	case 5:
 		tutorialMode = 0;
-		tutorialStep = 1;
 		document.getElementById("tutorial-next").innerHTML = "Finish";
-		return "<h3>How to play Step: " + tutorialStep + "</h3><br><p>Now you understand the basics of Othello!<p><p> Good luck and have fun playing!.</p>"; 
+		tutorialStep = 1;
+		//		document.getElementById("tutorial-next").setAttribute("onClick", "tutorialEnd()");
+		return "<h3>How to play Step: 4 </h3><br><p>When it is no longer possible for either player to move, the game is over. Discs are counted and the player with the majority of his or her colour discs on the board is the winner. Now you understand the basics of Othello!<p><p> Good luck and have fun playing!.</p>"; 
 	default:
 		console.log("no step match");
 	}
