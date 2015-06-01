@@ -716,3 +716,9 @@ tutorialButton.onclick = function() {
 	overlay.className = 'show';
 	popup.className = 'show';
 }
+
+function tutorialNext() {
+	console.log("tutorial");
+//	boardState[4*8+5] = "white";
+	checkValidity();
+}
