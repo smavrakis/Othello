@@ -360,6 +360,7 @@ function checkFlippings(x,y){
     var flipped = 0;
     var counter;
     var allFlipList = [];
+    var fl = 1; //Flag to see if a tile can be placed. 
     for (i=0;i < list.length; i++){
 	flipList = [];
 	counter = 0;	
@@ -410,8 +411,11 @@ function checkFlippings(x,y){
 	    
 	    flipList = [];
 	} else {
-	    placetile(x,y);
-	    drawState();
+	    if(fl == 1) {
+		placetile(x,y);
+		drawState();
+		fl = 0;
+	    }
 	    for (var j = 0;j < flipList.length;j++){
 		boardState[flipList[j].x*8+flipList[j].y] = flag;		
 	    }
@@ -429,7 +433,7 @@ function checkFlippings(x,y){
 	
 	    (function(k,list,step,temp,f){setTimeout(function(){animateFlip(k,list,step,temp,f)},delay)})(k,allFlipList[j],1,0,1);
 	} else {
-	    console.log("asd");
+	    
 	    (function(k,list,step,temp,f){setTimeout(function(){animateFlip(k,list,step,temp,f)},delay)})(k,allFlipList[j],1,0,0);
 	}
     }
