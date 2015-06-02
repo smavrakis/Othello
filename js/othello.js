@@ -13,10 +13,31 @@ var language = "en";
 //delay for animations
 var delay = 200
 
+//Temporary strings for helping with translations
+var string1 = "";
+var string2 = "";
+var string3 = "";
+
 // Dictionary for the internationalization part
 var resources = {  
-	en: { translation: { 'reset': 'Reset Game', 'mute': 'Mute tiles', 'tip': "This is each player's score. The player's turn is indicated by the underline under their score.", 'tutorial': 'How to Play' } },            
-	se: { translation: { 'reset': 'Starta om', 'mute': 'Stäng av brickljud', 'tip': "Detta är varje spelares poäng. Strecket under poängen visar vilken spelares tur det är.", 'tutorial': 'Hur man spelar' } }
+	en: { translation: { 'reset': 'Reset Game', 'mute': 'Mute tiles', 'tip': "This is each player's score. The player's turn is indicated by the underline under their score.", 'tutorial': 'How to Play',
+							'unmute': 'Unmute tiles', 'next': 'Next', 'back': 'Back', 'try': 'Try', 'finish': 'Finish', 'step': 'How to play Step: ',
+							'tut1': 'Othello is played between two players. Player one uses black tiles and player two uses white tiles. This tutorial will help you understand the rules of the game. Please press next to continue or feel free to close this box and start playing by yourself.',
+							'caution': '(Pressing next will reset the board)',
+							'tut2': "A valid placement is one such that the tile needs to be adjacent to another tile. You must also place the tile so you're in a position to flip the other player's tiles. You're allowed to flip the other player's tiles that are bordered at each end by your newly placed tile and an already placed tile of your color.",
+							'tut3': 'Press the try button and place a tile in such a way that your tiles suround one (or multiple) tiles of the oponent while still being adjacent to some other tile.',
+							'tut4': "As you saw the white tile flipped. It is now the opponent's turn to place a tile. Press next to place the next tile.",
+							'tut5': "When it is no longer possible for either player to move, the game is over. Discs are counted and the player with the majority of his or her colour discs on the board is the winner. Now you understand the basics of Othello!",
+							'tut6': 'Good luck and have fun playing!'} },            
+	se: { translation: { 'reset': 'Starta om', 'mute': 'Stäng av brickljud', 'tip': "Detta är varje spelares poäng. Strecket under poängen visar vilken spelares tur det är.", 'tutorial': 'Hur man spelar',
+							'unmute': 'Unmute tiles', 'next': 'Next', 'back': 'Back', 'try': 'Try', 'finish': 'Finish', 'step': 'How to play Step: ',
+							'tut1': 'Othello is played between two players. Player one uses black tiles and player two uses white tiles. This tutorial will help you understand the rules of the game. Please press next to continue or feel free to close this box and start playing by yourself.',
+							'caution': '(Pressing next will reset the board)',
+							'tut2': "A valid placement is one such that the tile needs to be adjacent to another tile. You must also place the tile so you're in a position to flip the other player's tiles. You're allowed to flip the other player's tiles that are bordered at each end by your newly placed tile and an already placed tile of your color.",
+							'tut3': 'Press the try button and place a tile in such a way that your tiles suround one (or multiple) tiles of the oponent while still being adjacent to some other tile.',
+							'tut4': "As you saw the white tile flipped. It is now the opponent's turn to place a tile. Press next to place the next tile.",
+							'tut5': "When it is no longer possible for either player to move, the game is over. Discs are counted and the player with the majority of his or her colour discs on the board is the winner. Now you understand the basics of Othello!",
+							'tut6': 'Good luck and have fun playing!'}}
 };
 
 //Initializes the boardState, calls resizeGame() and sets up the two EventListeners - one for user interaction and one for window resize
@@ -39,9 +60,15 @@ function draw(){
 
 	i18n.init({ resStore: resources, lng: language }, function(t) {		
 		document.getElementById("reset_button").innerHTML = t("reset");
-		document.getElementById("mute_button").innerHTML = t("mute");
+		if (tile_sound.muted == false){
+			document.getElementById("mute_button").innerHTML = t("mute");
+		}else{
+			document.getElementById("mute_button").innerHTML = t("unmute");
+		}		
 		document.getElementById("score-tip").innerHTML = t("tip");
 		document.getElementById("tutorial_button").innerHTML = t("tutorial");
+		document.getElementById("tutorial-next").innerHTML = t("next");
+		document.getElementById("tutorial-prev").innerHTML = t("back");
 	});    
 	
     var canvas2 = document.getElementById('state');
@@ -55,9 +82,15 @@ function make_lang_se() {
 	
 	i18n.init({ resStore: resources, lng: language }, function(t) {		
 		document.getElementById("reset_button").innerHTML = t("reset");
-		document.getElementById("mute_button").innerHTML = t("mute");
+		if (tile_sound.muted == false){
+			document.getElementById("mute_button").innerHTML = t("mute");
+		}else{
+			document.getElementById("mute_button").innerHTML = t("unmute");
+		}
 		document.getElementById("score-tip").innerHTML = t("tip");
 		document.getElementById("tutorial_button").innerHTML = t("tutorial");
+		document.getElementById("tutorial-next").innerHTML = t("next");
+		document.getElementById("tutorial-prev").innerHTML = t("back");
 	});
 }
 
@@ -67,9 +100,15 @@ function make_lang_en() {
 	
 	i18n.init({ resStore: resources, lng: language }, function(t) {		
 		document.getElementById("reset_button").innerHTML = t("reset");
-		document.getElementById("mute_button").innerHTML = t("mute");
+		if (tile_sound.muted == false){
+			document.getElementById("mute_button").innerHTML = t("mute");
+		}else{
+			document.getElementById("mute_button").innerHTML = t("unmute");
+		}
 		document.getElementById("score-tip").innerHTML = t("tip");
 		document.getElementById("tutorial_button").innerHTML = t("tutorial");
+		document.getElementById("tutorial-next").innerHTML = t("next");
+		document.getElementById("tutorial-prev").innerHTML = t("back");
 	});
 }
 
@@ -728,11 +767,15 @@ function drawState(){
 function mute() {
 	if (tile_sound.muted == true) {
 		tile_sound.muted = false;
-		document.getElementById("mute_button").innerHTML = "Mute tiles";
+		i18n.init({ resStore: resources, lng: language }, function(t) {
+			document.getElementById("mute_button").innerHTML = t("mute");
+		});		
 	}
 	else {
 		tile_sound.muted = true;
-		document.getElementById("mute_button").innerHTML = "Unmute tiles";
+		i18n.init({ resStore: resources, lng: language }, function(t) {
+			document.getElementById("mute_button").innerHTML = t("unmute");
+		});	
 	}
 }
 
@@ -755,8 +798,9 @@ closePopup.onclick = function() {
 	tutorialMode = 0;
 	tutorialStart();
 	//tutorialStep = 1;
-	document.getElementById("tutorial-next").innerHTML = "Next";
-	
+	i18n.init({ resStore: resources, lng: language }, function(t) {
+		document.getElementById("tutorial-next").innerHTML = t("next");
+	});
 };
 
 //show overlay and popup;
@@ -785,13 +829,17 @@ function tutorialPrev() {
 	}
 	var tutorialContent = document.getElementById("tutorial-content");
 	tutorialContent.innerHTML = fetchTutorialContent(tutorialStep);
-	document.getElementById("tutorial-next").innerHTML = "Next";
+	i18n.init({ resStore: resources, lng: language }, function(t) {
+		document.getElementById("tutorial-next").innerHTML = t("next");
+	});
 }
 
 function tutorialStart() {
 	tutorialStep = 1;
 	document.getElementById("tutorial-content").innerHTML = fetchTutorialContent(1);
-	document.getElementById("tutorial-next").innerHTML = "Next";
+	i18n.init({ resStore: resources, lng: language }, function(t) {
+		document.getElementById("tutorial-next").innerHTML = t("next");
+	});
 	document.getElementById("tutorial-next").setAttribute("onClick", "tutorialNext()");
 }
 
@@ -805,28 +853,53 @@ function fetchTutorialContent(step) {
 	switch (step) {
 		
 	case 1:
-		return "<h3>How to play Step: " + tutorialStep + "</h3><br>Othello is played between two players. Player one uses black tiles and player two uses white tiles. This tutorial will help you understant the rules of the game. Please press next to continue or feel free to close this box and start playing by yourself.</p> <p id='small'>(Pressing next will reset the board)</p>";
+		i18n.init({ resStore: resources, lng: language }, function(t) {
+			string1 = t("step");
+			string2 = t("tut1");
+			string3 = t("caution");
+		});
+			
+		return "<h3>" + string1 + tutorialStep + "</h3><br><p>" + string2 + "</p> <p id='small'>" + string3 + "</p>";		
 		break;
 	case 2:
 		draw();
-		return "<h3>How to play Step: " + tutorialStep + "</h3><p>A valid placement is one such that the tile needs to be adjacent to another tile. You must also place the tile so you're in a position to flip the other player's tiles. You're allowed to flip the other player's tiles that are bordered at each end by your newly placed tile and an already placed tile of your color.</p>"; 
+		i18n.init({ resStore: resources, lng: language }, function(t) {
+			string1 = t("step");
+			string2 = t("tut2");			
+		});
+		
+		return "<h3>" + string1 + tutorialStep + "</h3><p>" + string2 + "</p>"; 
 		break;
 	case 3:
 		var tryButton = document.getElementById("tutorial-next");
-		tryButton.innerHTML = "Try";
+		i18n.init({ resStore: resources, lng: language }, function(t) {
+			tryButton.innerHTML = t("try");
+			string1 = t("step");
+			string2 = t("tut3");
+		});
 		tryButton.setAttribute("onClick", "hideTutorial()");
 		
-		return "<h3>How to play Step: " + tutorialStep + "</h3><br><p>Press the try button and place a tile in such a way that your tiles suround one (or multiple) tiles of the oponent while still being adjacent to some other tile.</p>"; 
+		return "<h3>" + string1 + tutorialStep + "</h3><br><p>" + string2 + "</p>"; 
 		break;
 	case 4:
-		return "<h3>How to play Step: " + tutorialStep + "</h3><br><p>As you saw the white tile flipped. It is now the oponents turn to place a tile. Press next to place the next tile.</p>"; 
+		i18n.init({ resStore: resources, lng: language }, function(t) {			
+			string1 = t("step");
+			string2 = t("tut4");
+		});
+		
+		return "<h3>" + string1 + tutorialStep + "</h3><br><p>" + string2 + "</p>"; 
 		break;
 	case 5:
 		tutorialMode = 0;
-		document.getElementById("tutorial-next").innerHTML = "Finish";
+		i18n.init({ resStore: resources, lng: language }, function(t) {
+			document.getElementById("tutorial-next").innerHTML = t("finish");
+			string1 = t("step");
+			string2 = t("tut5");
+			string3 = t("tut6");
+		});
 		tutorialStep = 1;
 		//		document.getElementById("tutorial-next").setAttribute("onClick", "tutorialEnd()");
-		return "<h3>How to play Step: 4 </h3><br><p>When it is no longer possible for either player to move, the game is over. Discs are counted and the player with the majority of his or her colour discs on the board is the winner. Now you understand the basics of Othello!<p><p> Good luck and have fun playing!.</p>"; 
+		return "<h3>" + string1 + "4</h3><br><p>" + string2 + "</p><p>" + string3 + "</p>"; 
 	default:
 		console.log("no step match");
 	}

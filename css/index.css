@@ -297,13 +297,13 @@ button.flag {
 #swedishFlag {
     background-image: url("../img/swedish_flag.jpg"); 	
     left: 81%;
-    bottom: 5%;	
+    bottom: 7%;	
 }
 
 #britishFlag {
     background-image: url("../img/union_jack.png");	
     left: 90%; 
-    bottom: 5%;
+    bottom: 7%;
 }
 
 /* CSS animation */
