@@ -11,7 +11,7 @@ var tutorialMode = 0;
 var language = "en";
 
 //delay for animations
-var delay = 200
+var delay = 100
 
 //Temporary strings for helping with translations
 var string1 = "";
@@ -20,24 +20,24 @@ var string3 = "";
 
 // Dictionary for the internationalization part
 var resources = {  
-	en: { translation: { 'reset': 'Reset Game', 'mute': 'Mute tiles', 'tip': "This is each player's score. The player's turn is indicated by the underline under their score.", 'tutorial': 'How to Play',
-							'unmute': 'Unmute tiles', 'next': 'Next', 'back': 'Back', 'try': 'Try', 'finish': 'Finish', 'step': 'How to play Step: ',
-							'tut1': 'Othello is played between two players. Player one uses black tiles and player two uses white tiles. This tutorial will help you understand the rules of the game. Please press next to continue or feel free to close this box and start playing by yourself.',
-							'caution': '(Pressing next will reset the board)',
-							'tut2': "A valid placement is one such that the tile needs to be adjacent to another tile. You must also place the tile so you're in a position to flip the other player's tiles. You're allowed to flip the other player's tiles that are bordered at each end by your newly placed tile and an already placed tile of your color.",
-							'tut3': 'Press the try button and place a tile in such a way that your tiles suround one (or multiple) tiles of the oponent while still being adjacent to some other tile.',
-							'tut4': "As you saw the white tile flipped. It is now the opponent's turn to place a tile. Press next to place the next tile.",
-							'tut5': "When it is no longer possible for either player to move, the game is over. Discs are counted and the player with the majority of his or her colour discs on the board is the winner. Now you understand the basics of Othello!",
-							'tut6': 'Good luck and have fun playing!'} },            
-	se: { translation: { 'reset': 'Starta om', 'mute': 'Stäng av brickljud', 'tip': "Detta är varje spelares poäng. Strecket under poängen visar vilken spelares tur det är.", 'tutorial': 'Hur man spelar',
-							'unmute': 'Unmute tiles', 'next': 'Next', 'back': 'Back', 'try': 'Try', 'finish': 'Finish', 'step': 'How to play Step: ',
-							'tut1': 'Othello is played between two players. Player one uses black tiles and player two uses white tiles. This tutorial will help you understand the rules of the game. Please press next to continue or feel free to close this box and start playing by yourself.',
-							'caution': '(Pressing next will reset the board)',
-							'tut2': "A valid placement is one such that the tile needs to be adjacent to another tile. You must also place the tile so you're in a position to flip the other player's tiles. You're allowed to flip the other player's tiles that are bordered at each end by your newly placed tile and an already placed tile of your color.",
-							'tut3': 'Press the try button and place a tile in such a way that your tiles suround one (or multiple) tiles of the oponent while still being adjacent to some other tile.',
-							'tut4': "As you saw the white tile flipped. It is now the opponent's turn to place a tile. Press next to place the next tile.",
-							'tut5': "When it is no longer possible for either player to move, the game is over. Discs are counted and the player with the majority of his or her colour discs on the board is the winner. Now you understand the basics of Othello!",
-							'tut6': 'Good luck and have fun playing!'}}
+    en: { translation: { 'reset': 'Reset Game', 'mute': 'Mute tiles', 'tip': "This is each player's score. The player's turn is indicated by the underline under their score.", 'tutorial': 'How to Play',
+			 'unmute': 'Unmute tiles', 'next': 'Next', 'back': 'Back', 'try': 'Try', 'finish': 'Finish', 'step': 'How to play Step: ',
+			 'tut1': 'Othello is played between two players. Player one uses black tiles and player two uses white tiles. This tutorial will help you understand the rules of the game. Please press next to continue or feel free to close this box and start playing by yourself.',
+			 'caution': '(Pressing next will reset the board)',
+			 'tut2': "A valid placement is one such that the tile needs to be adjacent to another tile. You must also place the tile so you're in a position to flip the other player's tiles. You're allowed to flip the other player's tiles that are bordered at each end by your newly placed tile and an already placed tile of your color.",
+			 'tut3': 'Press the try button and place a tile in such a way that your tiles surround one (or multiple) tiles of the oponent while still being adjacent to some other tile.',
+			 'tut4': "As you saw the white tile flipped. It is now the opponent's turn to place a tile. Press next to place the next tile.",
+			 'tut5': "When it is no longer possible for either player to move, the game is over. Discs are counted and the player with the majority of his or her colour discs on the board is the winner. Now you understand the basics of Othello!",
+			 'tut6': 'Good luck and have fun playing!'} },            
+    se: { translation: { 'reset': 'Starta om', 'mute': 'Stäng av brickljud', 'tip': "Detta är varje spelares poäng. Strecket under poängen visar vilken spelares tur det är.", 'tutorial': 'Hur man spelar',
+			 'unmute': 'Sätt på brickljud', 'next': 'Nästa', 'back': 'Tillbaka', 'try': 'Försök själv', 'finish': 'Klar', 'step': 'Hur man spelar Steg: ',
+			 'tut1': 'Othello spelas av två spelare. Spelare 1 använder svarta brickor och spelare två använder vita. Denna tutorialen vill hjälpa dig förstå spelreglerna. Tryck på nästa för att fortsätta eller stäng denna rutan och börja spela',
+			 'caution': '(Att trycka på nästa återställer brädet)',
+			 'tut2': "Ett drag är tillåtet om brickan placeras angränsande andra brickor. Brickan måste placeras så du kan vända motspelarens brickor. Du är tillåten att vända alla brickor som ligger i en rät linje mellan den placerade brickan och brickor av din egen färg.",
+			 'tut3': 'Tryck på försök själv knappen  och placera en bricka så dina brickor omger en eller flera av motståndarens brickor medans den också ligger angränsande en annan bricka.',
+			 'tut4': "Som du såg så vändes en vit bricka. Det är nu motståndarens tur att placera en bricka. Tryck nästa för att placera en bricka.",
+			 'tut5': "När det inte längre går att placera en ny bricka, spelet är över. Brickorna räknas och spelaren med majoriten av brickorna i sin färg vinner. Nu förstår du grunderna i Othello!",
+			 'tut6': 'Lycka till och ha kul med spelet!'}}
 };
 
 //Initializes the boardState, calls resizeGame() and sets up the two EventListeners - one for user interaction and one for window resize
